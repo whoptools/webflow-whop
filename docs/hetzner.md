@@ -28,6 +28,18 @@ docker buildx stop webflow-whop-builder
 
 The standalone Caddy instructions below apply only to a dedicated host with free HTTP/HTTPS ports.
 
+For daily verified database snapshots on the shared host, install the provided timer:
+
+```sh
+install -m 644 deploy/webflow-whop-backup.{service,timer} /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable --now webflow-whop-backup.timer
+systemctl start webflow-whop-backup.service
+systemctl list-timers webflow-whop-backup.timer
+```
+
+Snapshots stay in the app's data volume. Arrange off-server copies and preserve the encryption key separately; the timer alone does not protect against losing the server.
+
 ## Prepare the host
 
 Use a Linux server with Docker Engine and the Compose plugin. Point a domain's A record to the server; add an AAAA record only when IPv6 is configured. Permit HTTP/HTTPS and restrict SSH to trusted administrator addresses. If the server already has a reverse proxy, integrate with it instead of starting another process on ports 80/443.
