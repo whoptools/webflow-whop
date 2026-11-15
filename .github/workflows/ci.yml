@@ -26,6 +26,25 @@ jobs:
           done
           docker logs checkout-test
           exit 1
+      - name: Verify Hetzner Compose, secrets, and backups
+        env:
+          APP_DOMAIN: app.example
+          APP_IMAGE_TAG: test
+          WEBFLOW_CLIENT_ID: ci-client
+          EXTENSION_ORIGINS: https://extension.example
+        run: |
+          mkdir -m 700 secrets
+          openssl rand -hex 32 > secrets/token_encryption_key
+          printf '%s' 'ci-only-placeholder' > secrets/webflow_client_secret
+          chmod 600 secrets/*
+          sudo chown 1000:1000 secrets/*
+          docker compose config --quiet
+          docker compose up --no-build --wait app
+          docker compose exec -T app node scripts/backup.mjs
+          docker compose restart app
+          docker compose up --no-build --wait app
+          docker compose run --rm --no-deps caddy caddy validate --config /etc/caddy/Caddyfile
+          docker compose down
       - uses: actions/upload-artifact@v4
         with:
           name: designer-extension-development

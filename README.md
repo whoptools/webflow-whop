@@ -60,6 +60,8 @@ npm run review
 
 ## Deploy
 
+For Hetzner, use the included [Compose deployment and backup guide](docs/hetzner.md).
+
 Use a durable HTTPS Node host with a persistent disk. SQLite is intended for one service process. Keep `DATA_DIR` and `TOKEN_ENCRYPTION_KEY` across deployments. Back up both securely; replacing the encryption key makes stored connections unreadable.
 
 The Dockerfile accepts `PUBLIC_URL` as a build argument. Pass the same URL at runtime, plus the Webflow credentials, encryption key, exact extension origins, and the persistent data directory. Configure the actual reverse proxy's trusted address range when deploying; local development trusts loopback only. The public service must not expose its database or `.env` file.
