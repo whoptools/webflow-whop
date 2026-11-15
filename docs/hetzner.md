@@ -2,6 +2,32 @@
 
 This Compose deployment runs one Node service behind Caddy. Only ports 80 and 443 are public. Caddy obtains and renews HTTPS certificates; SQLite, previously published checkout scripts, and TLS state survive container replacement.
 
+## Existing Kamal server
+
+On a host already running Kamal Proxy, use the override instead of starting Caddy:
+
+```sh
+docker compose -f compose.yaml -f deploy/compose.kamal.yaml up -d --no-build --wait app
+docker exec kamal-proxy kamal-proxy deploy webflow-whop \
+  --target webflow-whop-app:4319 --host webflow-whop.superails.com \
+  --tls --health-check-path /health
+```
+
+Build and tag the image first, using the same permanent URL. This override joins the existing `kamal` network, publishes no additional ports, limits the app to 512 MB RAM and half a CPU, and adds a separate hostname route. Existing services and proxy settings remain in place. Use both `-f` arguments for subsequent backup, restart, and upgrade commands.
+
+On a shared host, build in a separate resource-limited builder rather than changing the existing Kamal builder:
+
+```sh
+docker buildx create --name webflow-whop-builder --driver docker-container \
+  --driver-opt memory=1g,memory-swap=1536m,cpu-quota=100000,cpu-period=100000
+docker buildx build --builder webflow-whop-builder --load \
+  --build-arg PUBLIC_URL=https://webflow-whop.superails.com \
+  -t whop-checkout:0.1.2 .
+docker buildx stop webflow-whop-builder
+```
+
+The standalone Caddy instructions below apply only to a dedicated host with free HTTP/HTTPS ports.
+
 ## Prepare the host
 
 Use a Linux server with Docker Engine and the Compose plugin. Point a domain's A record to the server; add an AAAA record only when IPv6 is configured. Permit HTTP/HTTPS and restrict SSH to trusted administrator addresses. If the server already has a reverse proxy, integrate with it instead of starting another process on ports 80/443.

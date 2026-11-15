@@ -45,6 +45,12 @@ jobs:
           docker compose up --no-build --wait app
           docker compose run --rm --no-deps caddy caddy validate --config /etc/caddy/Caddyfile
           docker compose down
+          docker network create kamal
+          docker compose -f compose.yaml -f deploy/compose.kamal.yaml config --quiet
+          docker compose -f compose.yaml -f deploy/compose.kamal.yaml up --no-build --wait app
+          docker inspect webflow-whop-app --format '{{.HostConfig.Memory}}' | grep -qx '536870912'
+          docker compose -f compose.yaml -f deploy/compose.kamal.yaml exec -T app node scripts/backup.mjs
+          docker compose -f compose.yaml -f deploy/compose.kamal.yaml down
       - uses: actions/upload-artifact@v4
         with:
           name: designer-extension-development
