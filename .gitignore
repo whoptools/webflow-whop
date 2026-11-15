@@ -1,0 +1,14 @@
+node_modules/
+.env
+.env.*
+!.env.example
+data/
+public/bundle.js*
+dist/
+bundle.zip
+review.zip
+*.log
+.DS_Store
+site/assets/
+docs/screenshots/app-permissions.jpg
+docs/screenshots/webflow-security.jpg

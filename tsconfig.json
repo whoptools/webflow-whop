@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": [
+      "node",
+      "react",
+      "react-dom",
+      "@webflow/designer-extension-typings"
+    ]
+  },
+  "include": [
+    "src",
+    "server",
+    "test"
+  ]
+}

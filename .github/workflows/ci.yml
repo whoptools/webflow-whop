@@ -1,0 +1,33 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run bundle
+      - name: Verify production container
+        run: |
+          docker build --build-arg PUBLIC_URL=https://app.example -t whop-checkout:test .
+          docker run -d --name checkout-test -p 4319:4319 -e PUBLIC_URL=https://app.example -e TOKEN_ENCRYPTION_KEY=$(openssl rand -hex 32) whop-checkout:test
+          for attempt in 1 2 3 4 5; do
+            if curl --fail http://localhost:4319/health; then exit 0; fi
+            sleep 2
+          done
+          docker logs checkout-test
+          exit 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: designer-extension-development
+          path: bundle.zip
+          retention-days: 14

@@ -1,0 +1,22 @@
+import process from 'node:process';
+import console from 'node:console';
+import 'dotenv/config';
+import { build } from 'esbuild';
+import { mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+
+const api = process.env.PUBLIC_URL ?? 'http://localhost:4319';
+if (process.env.NODE_ENV === 'production' && !api.startsWith('https://')) throw new Error('Set an HTTPS PUBLIC_URL before building for production.');
+await mkdir('dist/review', { recursive: true });
+await mkdir('dist/storefront', { recursive: true });
+await mkdir('site/assets', { recursive: true });
+await build({ entryPoints: ['src/index.tsx'], bundle: true, minify: true, sourcemap: 'external', outfile: 'dist/review/bundle.js', target: 'es2022', define: { __API_ORIGIN__: JSON.stringify(api), 'process.env.NODE_ENV': '"production"' } });
+await copyFile('dist/review/bundle.js', 'public/bundle.js');
+await build({ entryPoints: ['src/storefront.ts'], bundle: true, minify: true, sourcemap: 'external', outfile: 'dist/review/storefront.js', target: 'es2022' });
+const runtime = await readFile('dist/review/storefront.js');
+const file = `checkout-${createHash('sha256').update(runtime).digest('hex').slice(0, 16)}.js`;
+await writeFile(`dist/storefront/${file}`, runtime);
+await writeFile('dist/storefront/manifest.json', JSON.stringify({ file, integrity: `sha384-${createHash('sha384').update(runtime).digest('base64')}` }));
+await build({ entryPoints: ['src/preview.ts'], bundle: true, minify: true, sourcemap: 'external', outfile: 'dist/review/preview.js', target: 'es2022' });
+await copyFile('dist/review/preview.js', 'site/assets/preview.js');
+console.log('Built Designer extension, versioned checkout runtime, and private review source maps.');
