@@ -1,0 +1,16 @@
+# Use with: docker compose -f compose.yaml -f deploy/compose.kamal.yaml ...
+name: webflow-whop
+services:
+  app:
+    container_name: webflow-whop-app
+    mem_limit: 512m
+    cpus: 0.5
+    networks:
+      - kamal
+  caddy:
+    # The existing Kamal Proxy owns ports 80/443 on this host.
+    profiles: [standalone-caddy]
+networks:
+  kamal:
+    external: true
+    name: kamal

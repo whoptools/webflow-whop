@@ -95,3 +95,21 @@ void test('production service refuses insecure public URLs', () => {
   const store = new Store(':memory:', randomBytes(32).toString('hex'));
   assert.throws(() => createApp({ ...config, publicUrl: 'http://example.com' }, store)); store.db.close();
 });
+
+void test('domain migration redirects OAuth before creating cookies and preserves published scripts', async () => {
+  const root = mkdtempSync(path.join(tmpdir(), 'whop-domain-'));
+  const store = new Store(':memory:', randomBytes(32).toString('hex'));
+  try {
+    mkdirSync(path.join(root, 'dist/storefront'), { recursive: true });
+    writeFileSync(path.join(root, 'dist/storefront/checkout.js'), '/* old published runtime */');
+    const app = createApp({ ...config, root, legacyHosts: ['old.example'] }, store);
+    const response = await request(app).get('/auth/start?next=demo').set('Host', 'old.example').expect(308);
+    assert.equal(response.headers.location, 'https://app.example/auth/start?next=demo');
+    assert.equal(response.headers['set-cookie'], undefined);
+    await request(app).get('/auth/start').set('Host', 'app.example').expect(302);
+    const runtime = await request(app).get('/runtime/checkout.js').set('Host', 'old.example').set('Origin', 'https://merchant.example').expect(200);
+    assert.equal(runtime.headers['access-control-allow-origin'], '*');
+    await request(app).get('/health').set('Host', 'old.example').expect(200);
+    await request(app).post(`/api/sites/${siteId}/status`).set('Host', 'old.example').set('Origin', 'https://extension.example').send({}).expect(401);
+  } finally { store.db.close(); rmSync(root, { recursive: true, force: true }); }
+});

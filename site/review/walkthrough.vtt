@@ -1,0 +1,139 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.682
+Whop Checkout adds payment buttons and embedded checkout to the Webflow Designer.
+
+00:00:04.682 --> 00:00:09.365
+All app features are free. This narrated walkthrough uses screens captured during
+
+00:00:09.365 --> 00:00:13.267
+testing of the installed app and its published sandbox demo.
+
+00:00:13.267 --> 00:00:17.996
+Open Apps in the Webflow Designer, select Whop Checkout, and launch the
+
+00:00:17.996 --> 00:00:22.725
+app. The integration is hosted at W F checkout dot Whop Tools
+
+00:00:22.725 --> 00:00:26.667
+dot com. Hosted checkout buttons work without connecting the backend.
+
+00:00:26.667 --> 00:00:31.683
+For embedded checkout, choose Connect Webflow. Webflow shows the requested identity, site,
+
+00:00:31.683 --> 00:00:36.700
+and custom code permissions. Select only the site you want to connect.
+
+00:00:36.700 --> 00:00:41.716
+No Webflow password or Whop merchant API key is collected by this
+
+00:00:41.716 --> 00:00:42.134
+app.
+
+00:00:42.134 --> 00:00:46.940
+A user can decline the authorization request. In this test, Cancel returned
+
+00:00:46.940 --> 00:00:51.746
+a clear cancellation message. The user can start the connection again from
+
+00:00:51.746 --> 00:00:52.547
+the app.
+
+00:00:52.547 --> 00:00:57.252
+Approving the request returns to the connected page. Go back to the
+
+00:00:57.252 --> 00:01:01.958
+Designer and choose Check connection. The backend verifies the Designer identity with
+
+00:01:01.958 --> 00:01:05.095
+Webflow before allowing changes to the site scripts.
+
+00:01:05.095 --> 00:01:09.982
+For a button, choose Checkout button, select Sandbox or Production, and paste
+
+00:01:09.982 --> 00:01:14.868
+a matching plan ID or checkout link. Set the button label, select
+
+00:01:14.868 --> 00:01:19.755
+a container, and add the button. Style the native element using Webflow
+
+00:01:19.755 --> 00:01:20.162
+controls.
+
+00:01:20.162 --> 00:01:24.962
+For an embedded checkout, select the embedded option and choose the appearance.
+
+00:01:24.962 --> 00:01:29.762
+Light, dark, and device themes are available. A return URL is optional.
+
+00:01:29.762 --> 00:01:34.562
+Select an existing checkout and use Load selected to edit its settings,
+
+00:01:34.562 --> 00:01:35.762
+then Update selected.
+
+00:01:35.762 --> 00:01:40.857
+Enable embedded checkout to register the versioned runtime and add it to
+
+00:01:40.857 --> 00:01:45.951
+the site footer. Publish the site to apply this change. The integration
+
+00:01:45.951 --> 00:01:51.046
+preserves unrelated site scripts. Its backend manages authorization and installation, not customer
+
+00:01:51.046 --> 00:01:51.895
+payment processing.
+
+00:01:51.895 --> 00:01:57.366
+This is the published Webflow demo. Whop supplies the price, payment methods,
+
+00:01:57.366 --> 00:02:02.837
+and secure payment fields. The app does not receive card details, create
+
+00:02:02.837 --> 00:02:06.028
+Webflow Ecommerce orders, or protect Webflow pages.
+
+00:02:06.028 --> 00:02:10.644
+A declined sandbox card produced a payment error and left the form
+
+00:02:10.644 --> 00:02:15.259
+available for another attempt. This verifies the failure path without making a
+
+00:02:15.259 --> 00:02:16.028
+real charge.
+
+00:02:16.028 --> 00:02:20.440
+The successful sandbox card completed the payment and reached Whop’s Payment complete
+
+00:02:20.440 --> 00:02:24.851
+page. The receipt and any product access are handled by Whop. A
+
+00:02:24.851 --> 00:02:28.895
+return URL alone should never be treated as proof of payment.
+
+00:02:28.895 --> 00:02:33.597
+The published checkout was also tested at a three hundred and ninety
+
+00:02:33.597 --> 00:02:38.298
+pixel mobile width. The form fits the viewport without horizontal overflow. Merchants
+
+00:02:38.298 --> 00:02:41.041
+can adjust their surrounding layout in Webflow.
+
+00:02:41.041 --> 00:02:45.773
+To remove the integration, expand Remove integration and choose Remove scripts and
+
+00:02:45.773 --> 00:02:50.504
+disconnect. Publish afterward to remove the runtime from the live site. Delete
+
+00:02:50.504 --> 00:02:54.841
+any checkout elements you no longer want, then uninstall the app.
+
+00:02:54.841 --> 00:03:00.140
+The removal test returned the app to its disconnected state. Reconnecting and
+
+00:03:00.140 --> 00:03:05.439
+installing again succeeded. Setup instructions, privacy information, and support are available from
+
+00:03:05.439 --> 00:03:09.855
+the app. Separate Webflow and Whop service charges may apply.

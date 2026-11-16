@@ -1,0 +1,64 @@
+name: whop-checkout
+services:
+  app:
+    image: whop-checkout:${APP_IMAGE_TAG:-local}
+    build:
+      context: .
+      args:
+        PUBLIC_URL: https://${APP_DOMAIN:?Set APP_DOMAIN}
+    restart: unless-stopped
+    init: true
+    environment:
+      PUBLIC_URL: https://${APP_DOMAIN:?Set APP_DOMAIN}
+      WEBFLOW_CLIENT_ID: ${WEBFLOW_CLIENT_ID:?Set WEBFLOW_CLIENT_ID}
+      WEBFLOW_CLIENT_SECRET_FILE: /run/secrets/webflow_client_secret
+      TOKEN_ENCRYPTION_KEY_FILE: /run/secrets/token_encryption_key
+      EXTENSION_ORIGINS: ${EXTENSION_ORIGINS:?Set EXTENSION_ORIGINS}
+      LEGACY_HOSTS: ${LEGACY_HOSTS:-}
+      TRUST_PROXY: "1"
+    secrets:
+      - webflow_client_secret
+      - token_encryption_key
+    volumes:
+      - app_data:/app/data
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:4319/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?Set APP_DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+secrets:
+  webflow_client_secret:
+    file: ./secrets/webflow_client_secret
+  token_encryption_key:
+    file: ./secrets/token_encryption_key
+volumes:
+  app_data:
+  caddy_data:
+  caddy_config:

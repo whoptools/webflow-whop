@@ -7,10 +7,10 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { Store } from './store';
 
-export type AppConfig = { publicUrl: string; clientId: string; clientSecret: string; allowedOrigins: string[]; production: boolean; root: string };
+export type AppConfig = { publicUrl: string; clientId: string; clientSecret: string; allowedOrigins: string[]; production: boolean; root: string; trustProxy?: string | number; runtimeDir?: string; legacyHosts?: string[] };
 type Script = { id: string; version: string; location: 'header' | 'footer'; attributes?: Record<string, unknown> };
 export const SCOPES = ['authorized_user:read', 'sites:read', 'sites:write', 'custom_code:read', 'custom_code:write'] as const;
-const VERSION = '0.1.1';
+const VERSION = '0.1.4';
 
 export function mergeScripts(existing: Script[], ownedIds: string[], additions: Script[]): Script[] {
   const owned = new Set([...ownedIds, ...additions.map(script => script.id)]);
@@ -44,8 +44,8 @@ export function createApp(config: AppConfig, store: Store, fetcher: typeof fetch
     res.status(upstream.status).set('Content-Type', upstream.headers.get('content-type') ?? 'application/octet-stream');
     res.send(Buffer.from(await upstream.arrayBuffer()));
   });
-  // The local tunnel connects over loopback. Never trust arbitrary proxy hops.
-  app.set('trust proxy', 'loopback');
+  // Production Compose exposes only Caddy, so exactly one proxy hop is trusted.
+  app.set('trust proxy', config.trustProxy ?? 'loopback');
   app.use(helmet({ contentSecurityPolicy: { directives: {
     defaultSrc: ["'self'"], scriptSrc: ["'self'", 'https://cdn.whop.com'],
     styleSrc: ["'self'", "'unsafe-inline'"], connectSrc: ["'self'", 'https://*.whop.com'],
@@ -53,7 +53,14 @@ export function createApp(config: AppConfig, store: Store, fetcher: typeof fetch
     imgSrc: ["'self'", 'data:', 'https:'], upgradeInsecureRequests: config.production ? [] : null,
   } }, frameguard: false, crossOriginResourcePolicy: { policy: 'cross-origin' } }));
   // Public storefront scripts must support SRI requests from any merchant domain.
-  app.use('/runtime', (_req, res, next) => { res.set('Access-Control-Allow-Origin', '*'); next(); }, express.static(path.join(config.root, 'dist/storefront'), { immutable: true, maxAge: '1y', index: false }));
+  app.use('/runtime', (_req, res, next) => { res.set('Access-Control-Allow-Origin', '*'); next(); }, express.static(config.runtimeDir ?? path.join(config.root, 'dist/storefront'), { immutable: true, maxAge: '1y', index: false }));
+  // Move browser sessions before setting OAuth cookies, while serving old script URLs in place.
+  app.use((req, res, next) => {
+    if (['GET', 'HEAD'].includes(req.method) && req.path !== '/health' && config.legacyHosts?.includes(req.hostname)) {
+      res.redirect(308, `${origin}${req.originalUrl}`); return;
+    }
+    next();
+  });
   app.use((req, res, next) => {
     const requestOrigin = req.get('origin');
     if (requestOrigin && !allowed.has(requestOrigin)) { res.status(403).json({ error: 'Origin is not allowed.' }); return; }

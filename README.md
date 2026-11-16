@@ -4,7 +4,7 @@ Add Whop checkout buttons and embedded payments from the Webflow Designer.
 
 Built by [Yaroslav Shmarov](https://github.com/yshmarov), author of [omniauth-whop](https://github.com/yshmarov/omniauth-whop) and [pay-whop](https://github.com/yshmarov/pay-whop).
 
-**Developer preview.** Tested in the Webflow Designer and with a completed sandbox payment. Public installation is pending permanent hosting and Webflow Marketplace review.
+Hosted at [wf-checkout.whoptools.com](https://wf-checkout.whoptools.com) and available for internal Webflow workspace testing. Public installation is pending Webflow Marketplace review.
 
 ![Whop Checkout Designer interface](docs/screenshots/local-preview.jpg)
 
@@ -59,6 +59,8 @@ npm run review
 `bundle.zip` contains only the extension. `review.zip` contains its matching source maps and source for Webflow's private review. Rebuild both together after any change. CI's development bundle uses localhost; it is not a Marketplace release artifact.
 
 ## Deploy
+
+For Hetzner, use the included [Compose deployment and backup guide](docs/hetzner.md).
 
 Use a durable HTTPS Node host with a persistent disk. SQLite is intended for one service process. Keep `DATA_DIR` and `TOKEN_ENCRYPTION_KEY` across deployments. Back up both securely; replacing the encryption key makes stored connections unreadable.
 
