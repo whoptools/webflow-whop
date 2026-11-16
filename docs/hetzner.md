@@ -9,7 +9,7 @@ On a host already running Kamal Proxy, use the override instead of starting Cadd
 ```sh
 docker compose -f compose.yaml -f deploy/compose.kamal.yaml up -d --no-build --wait app
 docker exec kamal-proxy kamal-proxy deploy webflow-whop \
-  --target webflow-whop-app:4319 --host webflow.whoptools.com \
+  --target webflow-whop-app:4319 --host checkout.whoptools.com \
   --tls --health-check-path /health
 ```
 
@@ -21,8 +21,8 @@ On a shared host, build in a separate resource-limited builder rather than chang
 docker buildx create --name webflow-whop-builder --driver docker-container \
   --driver-opt memory=1g,memory-swap=1536m,cpu-quota=100000,cpu-period=100000
 docker buildx build --builder webflow-whop-builder --load \
-  --build-arg PUBLIC_URL=https://webflow.whoptools.com \
-  -t whop-checkout:0.1.3 .
+  --build-arg PUBLIC_URL=https://checkout.whoptools.com \
+  -t whop-checkout:0.1.4 .
 docker buildx stop webflow-whop-builder
 ```
 

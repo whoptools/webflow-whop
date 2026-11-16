@@ -10,7 +10,7 @@ import type { Store } from './store';
 export type AppConfig = { publicUrl: string; clientId: string; clientSecret: string; allowedOrigins: string[]; production: boolean; root: string; trustProxy?: string | number; runtimeDir?: string; legacyHosts?: string[] };
 type Script = { id: string; version: string; location: 'header' | 'footer'; attributes?: Record<string, unknown> };
 export const SCOPES = ['authorized_user:read', 'sites:read', 'sites:write', 'custom_code:read', 'custom_code:write'] as const;
-const VERSION = '0.1.3';
+const VERSION = '0.1.4';
 
 export function mergeScripts(existing: Script[], ownedIds: string[], additions: Script[]): Script[] {
   const owned = new Set([...ownedIds, ...additions.map(script => script.id)]);
