@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><rect width="256" height="256" rx="52" fill="#f4512b"/><rect x="42" y="66" width="172" height="124" rx="19" fill="white"/><path d="M42 102H214" stroke="#f4512b" stroke-width="16"/><path d="M72 153h30m49-17 20 18-20 18m-21-18h39" fill="none" stroke="#f4512b" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Whop and Webflow">
+  <rect width="256" height="256" rx="20" fill="#171719"/>
+  <path d="M26 82H44L55 142L67 106H81L93 142L104 82H122L103 174H85L74 142L63 174H45Z" fill="#ff6243"/>
+  <path d="M134 82H152L163 142L175 106H189L201 142L212 82H230L211 174H193L182 142L171 174H153Z" fill="#146ef5"/>
+</svg>

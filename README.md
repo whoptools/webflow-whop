@@ -4,7 +4,7 @@ Add Whop checkout buttons and embedded payments from the Webflow Designer.
 
 Built by [Yaroslav Shmarov](https://github.com/yshmarov), author of [omniauth-whop](https://github.com/yshmarov/omniauth-whop) and [pay-whop](https://github.com/yshmarov/pay-whop).
 
-**Developer preview.** Hosted at [webflow-whop.superails.com](https://webflow-whop.superails.com) and available for internal Webflow workspace testing. Public installation is pending final production-host validation and Webflow Marketplace review.
+**Developer preview.** Hosted at [webflow.whoptools.com](https://webflow.whoptools.com) and available for internal Webflow workspace testing. Public installation is pending final production-host validation and Webflow Marketplace review.
 
 ![Whop Checkout Designer interface](docs/screenshots/local-preview.jpg)
 

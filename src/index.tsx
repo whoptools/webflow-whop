@@ -42,7 +42,7 @@ function App() {
     } catch (reason) { setError(true); setMessage((reason as Error).message); }
   };
   return <main>
-    <header><div className="brand-mark">w</div><div><h1>Whop Checkout</h1><p>Payments, right where you design.</p></div><span className="version">0.1</span></header>
+    <header><img className="brand-mark" src="./icon.svg" alt="Whop and Webflow" /><div><h1>Whop Checkout</h1><p>Payments, right where you design.</p></div><span className="version">0.1</span></header>
     {!inDesigner && <div className="preview-notice">Local preview · Open inside Webflow to add elements to your site.</div>}
     <section className="card">
       <div className="section-heading"><span className="step">1</span><h2>Choose your checkout</h2></div>

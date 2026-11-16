@@ -14,6 +14,7 @@ services:
       WEBFLOW_CLIENT_SECRET_FILE: /run/secrets/webflow_client_secret
       TOKEN_ENCRYPTION_KEY_FILE: /run/secrets/token_encryption_key
       EXTENSION_ORIGINS: ${EXTENSION_ORIGINS:?Set EXTENSION_ORIGINS}
+      LEGACY_HOSTS: ${LEGACY_HOSTS:-}
       TRUST_PROXY: "1"
     secrets:
       - webflow_client_secret
