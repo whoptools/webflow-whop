@@ -8,7 +8,7 @@ On a host already running Kamal Proxy, use the override instead of starting Cadd
 
 ```sh
 docker compose -f compose.yaml -f deploy/compose.kamal.yaml up -d --no-build --wait app
-docker exec kamal-proxy kamal-proxy deploy webflow-whop \
+docker exec kamal-proxy kamal-proxy deploy whoptools-wf-checkout \
   --target webflow-whop-app:4319 --host wf-checkout.whoptools.com \
   --tls --health-check-path /health
 ```
@@ -25,6 +25,8 @@ docker buildx build --builder webflow-whop-builder --load \
   -t whop-checkout:0.1.4 .
 docker buildx stop webflow-whop-builder
 ```
+
+For a domain migration, keep the previous hostname routes and set `LEGACY_HOSTS` to their comma-separated hostnames. Browser pages redirect to the new domain before OAuth cookies are created; previously published runtime URLs continue serving their original files.
 
 The standalone Caddy instructions below apply only to a dedicated host with free HTTP/HTTPS ports.
 
