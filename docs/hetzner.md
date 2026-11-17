@@ -6,7 +6,7 @@ This Compose deployment runs one Node service behind Caddy. Only ports 80 and 44
 
 Pushes to `whoptools/webflow-whop` `main` deploy automatically after CI passes:
 type checking, lint, tests, extension bundle, container checks, persistent storage
-and backup checks, and deployment failure/rollback tests. Pull requests never
+checks, and deployment failure/rollback tests. Pull requests never
 receive the deployment key. This updates the hosted service; Webflow extension
 uploads and Marketplace submission remain separate.
 
@@ -18,16 +18,15 @@ forwarding or interactive shell. The root-owned script is installed from
 It fetches the exact public-repository commit and verifies it is still `main`.
 
 The deployment builds an image with the resource-limited `webflow-whop-builder`,
-then creates a verified SQLite backup before replacing the container. It uses
+then replaces the container without taking a database backup. It uses
 `deploy/compose.storage.yaml` to require the existing `webflow-whop_app_data`
 volume and stable secret files. Health or activation failure restores the
-previous app image. Database rollback is separate: backups are retained, but
-existing data is never automatically overwritten.
+previous app image while retaining the current database.
 
 Releases live under `/opt/webflow-whop/releases/<commit>`, with `current`
 pointing to the healthy release. `/opt/webflow-whop/.env` remains the source of
-runtime settings. Secrets stay in `/opt/webflow-whop/secrets`; the daily backup
-timer continues to address the same running container and data volume.
+runtime settings. Secrets stay in `/opt/webflow-whop/secrets`. This demo has no
+scheduled or deployment-time backups by owner decision on November 17, 2026.
 
 Deployments share `/opt/pay-whop/shared/deploy.lock` with pay-whop, serializing
 builds and activation across both apps. The proxy and other app are not
@@ -72,18 +71,6 @@ For a domain migration, keep the previous hostname routes and set `LEGACY_HOSTS`
 
 The standalone Caddy instructions below apply only to a dedicated host with free HTTP/HTTPS ports.
 
-For daily verified database snapshots on the shared host, install the provided timer:
-
-```sh
-install -m 644 deploy/webflow-whop-backup.{service,timer} /etc/systemd/system/
-systemctl daemon-reload
-systemctl enable --now webflow-whop-backup.timer
-systemctl start webflow-whop-backup.service
-systemctl list-timers webflow-whop-backup.timer
-```
-
-Snapshots stay in the app's data volume. Arrange off-server copies and preserve the encryption key separately; the timer alone does not protect against losing the server.
-
 ## Prepare the host
 
 Use a Linux server with Docker Engine and the Compose plugin. Point a domain's A record to the server; add an AAAA record only when IPv6 is configured. Permit HTTP/HTTPS and restrict SSH to trusted administrator addresses. If the server already has a reverse proxy, integrate with it instead of starting another process on ports 80/443.
@@ -115,19 +102,19 @@ Build the extension with the same permanent `PUBLIC_URL`, then run `npm run bund
 
 Increase the registered runtime version in `server/app.ts` when its URL or content changes. The service archives content-addressed runtime files into its data volume at startup, preserving scripts for sites still using an older release.
 
-## Back up and restore
+## Optional database export for other installations
 
 ```sh
 docker compose exec -T app node scripts/backup.mjs
 ```
 
-This uses SQLite's online backup API, includes committed WAL data, and checks the backup's integrity. It writes to `/app/data/backups` with private permissions. Copy backups off the server and keep the encryption key in a separate secure backup. Hetzner daily server backups are an additional recovery option; a backup on the same disk alone does not protect against server loss.
+The hosted demo does not run this utility automatically. It uses SQLite's online backup API, includes committed WAL data, and checks the backup's integrity. It writes to `/app/data/backups` with private permissions. Copy backups off the server and keep the encryption key in a separate secure backup. Hetzner daily server backups are an additional recovery option; a backup on the same disk alone does not protect against server loss.
 
 For restoration, stop the app, preserve the current data volume, and restore a verified snapshot as `app.sqlite` in a fresh volume using UID 1000. Do not combine a restored database with another database's `-wal` or `-shm` files. Restore the matching encryption key and retained `runtime` directory before restarting. Never run `docker compose down --volumes` against the production deployment.
 
 ## Upgrade
 
-Back up first. Check out the reviewed release, set its `APP_IMAGE_TAG`, and run `docker compose up -d --build --wait`. Verify health and a sandbox checkout. Retain the previous image tag for rollback; use the same data volume and encryption key. Future schema migrations need an explicit rollback plan.
+Check out the reviewed release, set its `APP_IMAGE_TAG`, and run `docker compose up -d --build --wait`. Verify health and a sandbox checkout. Retain the previous image tag for rollback; use the same data volume and encryption key. Future schema migrations need an explicit rollback plan.
 
 ## References
 

@@ -41,7 +41,6 @@ touch "$destination/deploy/compose.yaml" "$destination/deploy/Dockerfile"
         self.command('docker', '''
 printf '%s\\n' "$*" >> "$TEST_ROOT/commands.log"
 if [[ ${FAIL_BUILD:-} == yes && $1 == buildx && $2 == build ]]; then exit 42; fi
-if [[ ${FAIL_BACKUP:-} == yes && $* == 'exec webflow-whop-app node scripts/backup.mjs' ]]; then exit 42; fi
 if [[ ${FAIL_ACTIVATION:-} == yes && $1 == compose && $* == *" up "* && ! -f "$TEST_ROOT/failed" ]]; then
   touch "$TEST_ROOT/failed"
   exit 42
@@ -85,16 +84,10 @@ fi
         self.assertIn(str(self.previous / 'compose.yaml'), activations[-1])
         self.assertEqual(self.previous, (self.base / 'current').resolve())
 
-    def test_backup_failure_keeps_current_app(self):
-        self.assertNotEqual(0, self.deploy(FAIL_BACKUP='yes').returncode)
-        self.assertNotIn(' up ', self.log.read_text())
-        self.assertEqual(self.previous, (self.base / 'current').resolve())
-
     def test_success_advances_release(self):
         result = self.deploy()
         self.assertEqual(0, result.returncode, result.stderr)
         self.assertEqual(self.base / 'releases' / self.revision, (self.base / 'current').resolve())
-        self.assertLess(self.log.read_text().index('exec webflow-whop-app node scripts/backup.mjs'), self.log.read_text().index(' up '))
         self.assertIn('exec kamal-proxy kamal-proxy deploy whoptools-wf-checkout', self.log.read_text())
 
 

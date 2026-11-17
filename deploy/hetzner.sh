@@ -64,8 +64,6 @@ if [[ $revision != "$latest" ]]; then
   exit 0
 fi
 
-# Back up the running app before replacing its image, without exposing its tokens.
-docker exec webflow-whop-app node scripts/backup.mjs
 replacing=true
 activate "$release"
 curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 2 \
