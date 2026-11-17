@@ -19,6 +19,7 @@ a:focus-visible, summary:focus-visible, .theme-control select:focus-visible { ou
   --font-weight-bold: 600;
 }
 .checkout-theme { min-block-size: 100vh; background: var(--ui-background); }
+.checkout-theme .fui-BaseButton[data-accent-color='orange'] { --accent-9-contrast: var(--ui-primary-text); }
 .app-shell { max-inline-size: 32rem; margin-inline: auto; padding: 1.5rem 1.25rem; }
 .app-header { display: flex; align-items: center; gap: .75rem; padding-block-end: 1.25rem; }
 .app-header > div { min-inline-size: 0; flex: 1; }

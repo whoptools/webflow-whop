@@ -1,6 +1,6 @@
-# Frosted UI local review
+# Frosted UI validation
 
-Prepared November 17, 2026. No deployment or Webflow extension upload has been performed for this migration.
+Verified November 17, 2026, for version 0.1.5 after the owner approved the local preview. The production-origin extension is uploaded for internal workspace testing.
 
 The Designer panel uses pinned Frosted UI components for buttons, fields, selects, tabs, headings, badges, and feedback. App appearance follows the Webflow host where supported, with a system fallback and saved Light/Dark overrides. Checkout appearance remains a separate merchant setting. Static service pages use the same official palettes and self-hosted Inter without a React runtime.
 
@@ -21,13 +21,22 @@ The local preview service has no Webflow client credentials or saved production 
 - No browser console warnings or errors during the local checks; generated theme CSS and self-hosted font serve successfully.
 - New checkout button styles use the official orange palette. Existing style reuse and update behavior is preserved.
 
-The new host-theme subscription and Designer-only actions have not been exercised in a live Webflow session with this build. Run that integration smoke test after local visual review, before releasing.
+## Live Webflow checks
 
-## Release boundary
+Tested the uploaded extension on Whop Commerce Demo with its existing sandbox plan:
 
-The existing 0.1.4 ZIPs are unchanged:
+- Follow Webflow tracks Light and Dark host changes. An explicit app override wins; Follow Webflow resumes synchronization. Original host System/default-dark settings were restored.
+- Native checkout button insertion, loading, label updates, and restoration pass. Existing merchant colors and corner radius remain unchanged.
+- Embedded checkout insertion, loading, appearance updates, and restoration pass. Temporary test elements were removed.
+- On the final bundle, disconnect removes the scripts and saved connection. OAuth reconnect to the demo site, connection verification, and script installation pass.
+- The restored demo was republished. Its original checkout button and one embedded sandbox payment form render successfully. No payment was submitted in this UI smoke test; success/decline payment tests from 0.1.4 remain recorded in [validation](validation.md).
+- Live testing caught white text on enabled orange Frosted buttons. The final bundle uses the shared guide's black primary text, verified in the browser.
+- No extension-origin warnings or errors were captured in the final Designer check.
 
-- `bundle.zip`: `81bc1da1e6c3a43165ea6f41d66eefc9aeed96dcfc27c1bdb2d5698db0b34faf`
-- `review.zip`: `f108cdc67803fa9bee450b56c5e7d32e6c037e6cf0f96cff799c64f41d342d10`
+![Frosted UI running in the Webflow Designer](screenshots/frosted-ui-live-webflow.jpg)
 
-These frozen ZIPs do not contain this migration. After approval, use a new release version, build with the production origin, regenerate matching bundle/review ZIPs and screenshots, and update the reviewer walkthrough. Leave any PR for the user's review and merge.
+## Release artifacts
+
+The 0.1.5 `bundle.zip` and matching `review.zip` use `https://wf-checkout.whoptools.com`. Checksums are recorded in [Marketplace notes](marketplace.md). Previous 0.1.4 artifacts are preserved separately in ignored local backups.
+
+The extension upload is internal testing, not Marketplace publication. Listing screenshots and the narrated walkthrough still need refreshing for Frosted UI before submission. The unapproved Terms draft remains excluded.

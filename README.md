@@ -54,7 +54,7 @@ App theme follows Webflow's appearance when available, falling back to the devic
 
 `npm run build` generates the component CSS, semantic theme CSS, font assets, licenses, and page-theme script alongside the JavaScript. Layout lives in `public/styles.css`; the static palette mapping lives in `scripts/ui-assets.mjs`. Preview with a local `PUBLIC_URL`; `/extension/` renders the panel and `/` renders the service homepage. Real insertion and connection actions require the Webflow Designer.
 
-The Frosted UI migration is prepared for local review. Production and the frozen 0.1.4 Marketplace ZIPs have not been updated. After visual approval, build matching release and review ZIPs and refresh the reviewer screenshots and walkthrough before submission.
+Version 0.1.5 passed live Webflow checks and is uploaded for internal workspace testing. See [validation results](docs/frosted-ui-review.md). Matching production bundle/review ZIPs are prepared; refresh Marketplace listing screenshots and the reviewer walkthrough before submission.
 
 ## Validate and bundle
 

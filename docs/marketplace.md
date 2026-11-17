@@ -55,9 +55,9 @@ The existing sandbox plan belongs to the original test organization. Use **WhopT
 
 ## Pending
 
-Preflight receipt and file uploads, final terms publication, agreement acknowledgement, and submission. The form rejects hostnames containing the Webflow name; `wf-checkout.whoptools.com` resolves that issue. The form's pricing check misread merchant subscriptions as app pricing, so the listing now describes the checkout features and explicitly states that all app features are free.
+Refresh the listing screenshots and narrated walkthrough for Frosted UI 0.1.5. Preflight receipt and file uploads, final terms publication, agreement acknowledgement, and submission remain pending. The form rejects hostnames containing the Webflow name; `wf-checkout.whoptools.com` resolves that issue. The form's pricing check misread merchant subscriptions as app pricing, so the listing now describes the checkout features and explicitly states that all app features are free.
 
-## Frozen 0.1.4 artifact checksums
+## Version 0.1.5 artifact checksums
 
-- `bundle.zip` SHA-256: `81bc1da1e6c3a43165ea6f41d66eefc9aeed96dcfc27c1bdb2d5698db0b34faf`
-- `review.zip` SHA-256: `f108cdc67803fa9bee450b56c5e7d32e6c037e6cf0f96cff799c64f41d342d10`
+- `bundle.zip` SHA-256: `7ce80efaf6aa4515b177c7d8e080acaa31a0b19ac8c8c659e1bf337385d3f1b5`
+- `review.zip` SHA-256: `fb6335f528c00ccdd5d8cb16d0b32c2d128c52fedeaaf64a97dcf342e7f1e324`

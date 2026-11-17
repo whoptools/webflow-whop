@@ -1,6 +1,6 @@
 {
   "name": "whop-commerce",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "scripts": {
     "dev": "tsx watch server/index.ts",
     "dev:extension": "webflow extension serve",
