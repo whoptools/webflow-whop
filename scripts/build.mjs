@@ -12,7 +12,6 @@ await mkdir('dist/review', { recursive: true });
 await mkdir('dist/storefront', { recursive: true });
 await mkdir('site/assets', { recursive: true });
 await buildUiAssets();
-await build({ entryPoints: ['src/site-theme.ts'], bundle: true, minify: true, outfile: 'public/theme-init.js', target: 'es2022' });
 await build({ entryPoints: ['src/index.tsx'], bundle: true, minify: true, sourcemap: 'external', outfile: 'dist/review/bundle.js', target: 'es2022', define: { __API_ORIGIN__: JSON.stringify(api), 'process.env.NODE_ENV': '"production"' } });
 await copyFile('dist/review/bundle.js', 'public/bundle.js');
 await copyFile('dist/review/bundle.css', 'public/bundle.css');
