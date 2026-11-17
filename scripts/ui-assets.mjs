@@ -23,7 +23,6 @@ export async function buildUiAssets() {
   await writeFile('public/theme.css', `/* Generated from official Frosted UI palettes. */
 @font-face{font-family:'Inter Variable';font-style:normal;font-weight:100 900;font-display:swap;src:url('./fonts/inter-latin.woff2') format('woff2')}
 :root{color-scheme:light;${declarations('light')}}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;${declarations('dark')}}}
-:root[data-theme=dark]{color-scheme:dark;${declarations('dark')}}
+@media(prefers-color-scheme:dark){:root{color-scheme:dark;${declarations('dark')}}}
 `);
 }

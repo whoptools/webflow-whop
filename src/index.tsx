@@ -3,24 +3,23 @@ import { createRoot } from 'react-dom/client';
 import { Badge, Button, Callout, Heading, Select, SegmentedControl, Text, TextField, Theme } from 'frosted-ui';
 import 'frosted-ui/styles.css';
 import { useUiTheme } from './use-ui-theme';
-import type { ThemeChoice } from './ui-theme';
 import { DEFAULT_CONFIG, REFERRAL_URL, checkoutUrl, validateConfig, type CheckoutConfig } from './config';
 import { insertCheckout, selectedConfig, updateCheckout } from './designer';
 declare const __API_ORIGIN__: string;
 
-function Choice<T extends string>({ id, value, onChange, options, compact = false }: {
+function Choice<T extends string>({ id, value, onChange, options }: {
   id: string; value: T; onChange: (value: T) => void;
-  options: { value: T; label: string }[]; compact?: boolean;
+  options: { value: T; label: string }[];
 }) {
   return <Select.Root<T> value={value} onValueChange={next => { if (next !== null) onChange(next); }} items={options} size="2">
-    <Select.Trigger id={id} className={compact ? 'theme-select' : 'field-select'} />
+    <Select.Trigger id={id} className="field-select" />
     <Select.Content>{options.map(option => <Select.Item key={option.value} value={option.value}>{option.label}</Select.Item>)}</Select.Content>
   </Select.Root>;
 }
 
 function App() {
   const inDesigner = typeof webflow !== 'undefined';
-  const ui = useUiTheme(inDesigner);
+  const ui = useUiTheme();
   useEffect(() => { if (inDesigner) void webflow.setExtensionSize({ width: 480, height: 740 }).catch(() => {}); }, [inDesigner]);
   const [config, setConfig] = useState<CheckoutConfig>(DEFAULT_CONFIG);
   const [busy, setBusy] = useState(false);
@@ -60,9 +59,10 @@ function App() {
     <main className="app-shell">
       <header className="app-header">
         <img className="brand-mark" src="./icon.svg" alt="" />
-        <div><Heading size="5" weight="semi-bold">Whop Checkout</Heading><Text render={<p />} size="2" color="gray">Payments, right where you design.</Text></div>
+        <div><Heading size="5" weight="semi-bold">Whop Checkout for Webflow</Heading><Text render={<p />} size="2" color="gray">Payments, right where you design.</Text></div>
         <Badge color="gray" variant="soft">Webflow</Badge>
       </header>
+      <a className="signup-link" href={REFERRAL_URL} target="_blank" rel="sponsored noreferrer">Create a Whop account ↗</a>
       {!inDesigner && <Callout.Root color="info" className="preview-notice"><Callout.Description>Preview mode · Open in Webflow to add checkout to your site.</Callout.Description></Callout.Root>}
 
       <section className="app-section" aria-labelledby="choose-heading">
@@ -117,8 +117,6 @@ function App() {
       </section>
       {message && <Callout.Root role={error ? 'alert' : 'status'} color={error ? 'danger' : 'success'} className="notice"><Callout.Description>{message}</Callout.Description></Callout.Root>}
       <footer className="app-footer">
-        <div className="theme-control"><Text render={<label htmlFor="ui-theme" />} size="2" color="gray">App theme</Text><Choice<ThemeChoice> id="ui-theme" value={ui.choice} onChange={ui.setChoice} compact options={[{ value: 'system', label: inDesigner ? 'Follow Webflow' : 'System' }, { value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }]} /></div>
-        <a href={REFERRAL_URL} target="_blank" rel="sponsored noreferrer">Create a Whop account</a>
         <nav aria-label="Help"><a href={`${__API_ORIGIN__}/guide.html`} target="_blank" rel="noreferrer">Setup guide</a><a href={`${__API_ORIGIN__}/privacy.html`} target="_blank" rel="noreferrer">Privacy</a><a href="https://github.com/yshmarov" target="_blank" rel="noreferrer">Yaroslav Shmarov</a></nav>
       </footer>
     </main>

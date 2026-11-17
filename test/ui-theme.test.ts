@@ -1,25 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseTheme, readTheme, resolveTheme, saveTheme } from '../src/ui-theme';
+import { watchSystemTheme } from '../src/ui-theme';
 
-void test('automatic appearance follows the host before the device; explicit choice wins', () => {
-  assert.equal(resolveTheme('system', false, 'dark'), 'dark');
-  assert.equal(resolveTheme('system', true, 'light'), 'light');
-  assert.equal(resolveTheme('light', true, 'dark'), 'light');
-  assert.equal(resolveTheme('dark', false, 'light'), 'dark');
-  assert.equal(resolveTheme('system', true), 'dark');
-  assert.equal(resolveTheme('system', false), 'light');
-});
-
-void test('unknown stored choices and unavailable storage safely fall back to system', () => {
-  for (const value of [null, '', 'auto', '<script>', {}]) assert.equal(parseTheme(value), 'system');
-  assert.equal(parseTheme('light'), 'light');
-  assert.equal(parseTheme('dark'), 'dark');
+void test('system theme initializes, follows changes, ignores legacy overrides and unsubscribes', () => {
   const original = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
-  Object.defineProperty(globalThis, 'localStorage', { configurable: true, get() { throw new Error('Storage denied'); } });
+  Object.defineProperty(globalThis, 'localStorage', { configurable: true, get() { throw new Error('Theme storage must never be read'); } });
+  const listeners = new Set<() => void>();
+  const media = { matches: true, addEventListener: (_: string, fn: () => void) => listeners.add(fn), removeEventListener: (_: string, fn: () => void) => listeners.delete(fn) };
+  const seen: string[] = [];
   try {
-    assert.equal(readTheme(), 'system');
-    assert.doesNotThrow(() => saveTheme('dark'));
+    const stop = watchSystemTheme(value => seen.push(value), media as unknown as MediaQueryList);
+    assert.deepEqual(seen, ['dark']);
+    media.matches = false;
+    listeners.forEach(fn => fn());
+    assert.deepEqual(seen, ['dark', 'light']);
+    media.matches = true;
+    listeners.forEach(fn => fn());
+    assert.deepEqual(seen, ['dark', 'light', 'dark']);
+    stop();
+    assert.equal(listeners.size, 0);
   } finally {
     if (original) Object.defineProperty(globalThis, 'localStorage', original);
     else Reflect.deleteProperty(globalThis, 'localStorage');

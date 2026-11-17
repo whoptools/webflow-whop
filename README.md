@@ -50,9 +50,9 @@ The service defaults to port 4319. A shell-exported PORT overrides `.env`; use `
 
 The Designer panel uses Whop's `frosted-ui` React components. The service pages use official `@frosted-ui/colors` palettes and self-hosted Inter, following the [shared WhopTools style guide](https://github.com/whoptools/whoptools.com/blob/2771765/STYLE_GUIDE.md).
 
-App theme follows Webflow's appearance when available, falling back to the device theme. Light and Dark override that default. The choice persists locally and is separate from the merchant's checkout appearance. Service pages offer System, Light, and Dark. New checkout button styles use Whop orange; existing merchant styles are preserved.
+App and service-page themes follow the device automatically, including changes while open. There is no manual switch or saved override. The merchant's customer-checkout appearance remains a separate setting. New checkout button styles use Whop orange; existing merchant styles are preserved.
 
-`npm run build` generates the component CSS, semantic theme CSS, font assets, licenses, and page-theme script alongside the JavaScript. Layout lives in `public/styles.css`; the static palette mapping lives in `scripts/ui-assets.mjs`. Preview with a local `PUBLIC_URL`; `/extension/` renders the panel and `/` renders the service homepage. Real insertion and connection actions require the Webflow Designer.
+`npm run build` generates the component CSS, semantic theme CSS, font assets and licenses alongside the JavaScript. Layout lives in `public/styles.css`; the static palette mapping lives in `scripts/ui-assets.mjs`. Preview with a local `PUBLIC_URL`; `/extension/` renders the panel and `/` renders the service homepage. Real insertion and connection actions require the Webflow Designer.
 
 Version 0.1.5 passed live Webflow checks and is uploaded for internal workspace testing. See [validation results](docs/frosted-ui-review.md). Matching production bundle/review ZIPs are prepared; refresh Marketplace listing screenshots and the reviewer walkthrough before submission.
 
