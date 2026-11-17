@@ -19,7 +19,7 @@ Hosted at [wf-checkout.whoptools.com](https://wf-checkout.whoptools.com) and ava
 
 This integration uses Whop checkout independently of Webflow Ecommerce. It does not sync CMS products, create Webflow orders, or gate Webflow pages. See [setup instructions](site/guide.html) and [implementation research](docs/research.md).
 
-[Get started with Whop](https://whop.com/start/?code=CAKARK). *I may earn a commission.*
+[Create a Whop account](https://whop.com/start/?code=CAKARK).
 
 ## Develop
 

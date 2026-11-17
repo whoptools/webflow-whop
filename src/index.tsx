@@ -118,8 +118,7 @@ function App() {
       {message && <Callout.Root role={error ? 'alert' : 'status'} color={error ? 'danger' : 'success'} className="notice"><Callout.Description>{message}</Callout.Description></Callout.Root>}
       <footer className="app-footer">
         <div className="theme-control"><Text render={<label htmlFor="ui-theme" />} size="2" color="gray">App theme</Text><Choice<ThemeChoice> id="ui-theme" value={ui.choice} onChange={ui.setChoice} compact options={[{ value: 'system', label: inDesigner ? 'Follow Webflow' : 'System' }, { value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }]} /></div>
-        <a href={REFERRAL_URL} target="_blank" rel="sponsored noreferrer">Start selling with Whop ↗</a>
-        <Text render={<small />} size="1" color="gray" className="disclosure">I may earn a commission.</Text>
+        <a href={REFERRAL_URL} target="_blank" rel="sponsored noreferrer">Create a Whop account</a>
         <nav aria-label="Help"><a href={`${__API_ORIGIN__}/guide.html`} target="_blank" rel="noreferrer">Setup guide</a><a href={`${__API_ORIGIN__}/privacy.html`} target="_blank" rel="noreferrer">Privacy</a><a href="https://github.com/yshmarov" target="_blank" rel="noreferrer">Yaroslav Shmarov</a></nav>
       </footer>
     </main>

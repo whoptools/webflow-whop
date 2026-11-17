@@ -54,7 +54,6 @@ summary { cursor: pointer; color: var(--ui-muted); }
 .theme-control[hidden] { display: none; }
 .app-footer .theme-control { justify-content: space-between; margin-block-end: 1.25rem; }
 .theme-select { min-inline-size: 7.5rem; }
-.disclosure { display: block; margin-block-start: .375rem; }
 .app-footer nav { display: flex; flex-wrap: wrap; gap: .25rem 1rem; margin-block-start: .75rem; font-size: .75rem; }
 .app-footer nav a { display: inline-flex; align-items: center; min-block-size: 2rem; color: var(--ui-muted); }
 /* Static service pages share the same tokens and font without loading React. */
