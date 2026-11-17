@@ -2,6 +2,48 @@
 
 This Compose deployment runs one Node service behind Caddy. Only ports 80 and 443 are public. Caddy obtains and renews HTTPS certificates; SQLite, previously published checkout scripts, and TLS state survive container replacement.
 
+## Automatic deployments on the shared server
+
+Pushes to `whoptools/webflow-whop` `main` deploy automatically after CI passes:
+type checking, lint, tests, extension bundle, container checks, persistent storage
+and backup checks, and deployment failure/rollback tests. Pull requests never
+receive the deployment key. This updates the hosted service; Webflow extension
+uploads and Marketplace submission remain separate.
+
+GitHub secrets `HETZNER_DEPLOY_KEY` and `HETZNER_KNOWN_HOSTS` contain a dedicated
+SSH key and pinned server host key. The `webflow-whop-deploy` Unix account's key
+allows only `/usr/local/sbin/webflow-whop-deploy 'deploy <commit SHA>'`, with no
+forwarding or interactive shell. The root-owned script is installed from
+`deploy/hetzner.sh`; changing that script requires an operator to reinstall it.
+It fetches the exact public-repository commit and verifies it is still `main`.
+
+The deployment builds an image with the resource-limited `webflow-whop-builder`,
+then creates a verified SQLite backup before replacing the container. It uses
+`deploy/compose.storage.yaml` to require the existing `webflow-whop_app_data`
+volume and stable secret files. Health or activation failure restores the
+previous app image. Database rollback is separate: backups are retained, but
+existing data is never automatically overwritten.
+
+Releases live under `/opt/webflow-whop/releases/<commit>`, with `current`
+pointing to the healthy release. `/opt/webflow-whop/.env` remains the source of
+runtime settings. Secrets stay in `/opt/webflow-whop/secrets`; the daily backup
+timer continues to address the same running container and data volume.
+
+Deployments share `/opt/pay-whop/shared/deploy.lock` with pay-whop, serializing
+builds and activation across both apps. The proxy and other app are not
+restarted. Container replacement can briefly interrupt requests. Old checkout
+scripts and encrypted connections persist in the existing volume.
+
+Monitor the **Deploy to Hetzner** CI job; rerun failed jobs to retry. Superseded
+commits are skipped. Keep previous releases and images for rollback. For an
+operator deployment of the current, CI-verified main commit:
+
+```sh
+ssh root@188.245.75.73 "/usr/local/sbin/webflow-whop-deploy 'deploy <40-character SHA>'"
+```
+
+A release with irreversible schema changes needs its own database recovery plan.
+
 ## Existing Kamal server
 
 On a host already running Kamal Proxy, use the override instead of starting Caddy:
@@ -22,7 +64,7 @@ docker buildx create --name webflow-whop-builder --driver docker-container \
   --driver-opt memory=1g,memory-swap=1536m,cpu-quota=100000,cpu-period=100000
 docker buildx build --builder webflow-whop-builder --load \
   --build-arg PUBLIC_URL=https://wf-checkout.whoptools.com \
-  -t whop-checkout:0.1.4 .
+  -t whop-checkout:0.1.5 .
 docker buildx stop webflow-whop-builder
 ```
 

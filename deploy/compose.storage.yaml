@@ -1,0 +1,10 @@
+# Production upgrades must reuse the existing database/runtime volume.
+volumes:
+  app_data:
+    external: true
+    name: webflow-whop_app_data
+secrets:
+  webflow_client_secret:
+    file: ${WEBFLOW_DEPLOY_ROOT:-/opt/webflow-whop}/secrets/webflow_client_secret
+  token_encryption_key:
+    file: ${WEBFLOW_DEPLOY_ROOT:-/opt/webflow-whop}/secrets/token_encryption_key

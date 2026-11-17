@@ -19,8 +19,8 @@ jobs:
       - name: Verify production container
         run: |
           docker build --build-arg PUBLIC_URL=https://app.example -t whop-checkout:test .
-          docker run -d --name checkout-test -p 4319:4319 -e PUBLIC_URL=https://app.example -e TOKEN_ENCRYPTION_KEY=$(openssl rand -hex 32) whop-checkout:test
-          for attempt in 1 2 3 4 5; do
+          docker run -d --name checkout-test -p 4319:4319 -e PUBLIC_URL=https://app.example -e TOKEN_ENCRYPTION_KEY="$(openssl rand -hex 32)" whop-checkout:test
+          for _attempt in 1 2 3 4 5; do
             if curl --fail http://localhost:4319/health; then exit 0; fi
             sleep 2
           done
@@ -51,8 +51,56 @@ jobs:
           docker inspect webflow-whop-app --format '{{.HostConfig.Memory}}' | grep -qx '536870912'
           docker compose -f compose.yaml -f deploy/compose.kamal.yaml exec -T app node scripts/backup.mjs
           docker compose -f compose.yaml -f deploy/compose.kamal.yaml down
+          export WEBFLOW_DEPLOY_ROOT="$GITHUB_WORKSPACE"
+          docker compose -f compose.yaml -f deploy/compose.kamal.yaml -f deploy/compose.storage.yaml config --quiet
+          docker compose -f compose.yaml -f deploy/compose.kamal.yaml -f deploy/compose.storage.yaml up --no-build --wait app
+          docker inspect webflow-whop-app --format '{{range .Mounts}}{{if eq .Destination "/app/data"}}{{.Name}}{{end}}{{end}}' | grep -qx webflow-whop_app_data
+          docker compose -f compose.yaml -f deploy/compose.kamal.yaml -f deploy/compose.storage.yaml exec -T app node scripts/backup.mjs
+          docker compose -f compose.yaml -f deploy/compose.kamal.yaml -f deploy/compose.storage.yaml down
       - uses: actions/upload-artifact@v4
         with:
           name: designer-extension-development
           path: bundle.zip
           retention-days: 14
+
+  deployment-test:
+    name: Validate deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash -n deploy/hetzner.sh
+      - run: python3 deploy/test_deployment.py
+
+  deploy:
+    name: Deploy to Hetzner
+    needs: [verify, deployment-test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: hetzner-production
+      cancel-in-progress: false
+    steps:
+      - name: Configure deployment SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.HETZNER_DEPLOY_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.HETZNER_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+      - name: Deploy tested main revision
+        env:
+          DEPLOY_SHA: ${{ github.sha }}
+        run: |
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            -o ServerAliveInterval=30 -o ServerAliveCountMax=10 \
+            webflow-whop-deploy@188.245.75.73 "deploy $DEPLOY_SHA"
+      - name: Check public health
+        run: |
+          curl --fail --silent --show-error --retry 5 --retry-all-errors \
+            --retry-delay 3 https://wf-checkout.whoptools.com/health > /dev/null
+          curl --fail --silent --show-error https://pay.whoptools.com/up > /dev/null
+      - name: Remove deployment credentials
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519
