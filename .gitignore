@@ -6,6 +6,11 @@ data/
 secrets/
 backups/
 public/bundle.js*
+public/bundle.css*
+public/theme.css
+public/theme-init.js
+public/fonts/
+public/licenses/
 dist/
 bundle.zip
 review.zip

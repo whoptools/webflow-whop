@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Badge, Button, Callout, Heading, Select, SegmentedControl, Text, TextField, Theme } from 'frosted-ui';
+import 'frosted-ui/styles.css';
+import { useUiTheme } from './use-ui-theme';
+import type { ThemeChoice } from './ui-theme';
 import { DEFAULT_CONFIG, REFERRAL_URL, checkoutUrl, validateConfig, type CheckoutConfig } from './config';
 import { insertCheckout, selectedConfig, updateCheckout } from './designer';
 declare const __API_ORIGIN__: string;
 
+function Choice<T extends string>({ id, value, onChange, options, compact = false }: {
+  id: string; value: T; onChange: (value: T) => void;
+  options: { value: T; label: string }[]; compact?: boolean;
+}) {
+  return <Select.Root<T> value={value} onValueChange={next => { if (next !== null) onChange(next); }} items={options} size="2">
+    <Select.Trigger id={id} className={compact ? 'theme-select' : 'field-select'} />
+    <Select.Content>{options.map(option => <Select.Item key={option.value} value={option.value}>{option.label}</Select.Item>)}</Select.Content>
+  </Select.Root>;
+}
+
 function App() {
   const inDesigner = typeof webflow !== 'undefined';
+  const ui = useUiTheme(inDesigner);
   useEffect(() => { if (inDesigner) void webflow.setExtensionSize({ width: 480, height: 740 }).catch(() => {}); }, [inDesigner]);
   const [config, setConfig] = useState<CheckoutConfig>(DEFAULT_CONFIG);
   const [busy, setBusy] = useState(false);
@@ -41,36 +56,74 @@ function App() {
       }
     } catch (reason) { setError(true); setMessage((reason as Error).message); }
   };
-  return <main>
-    <header><img className="brand-mark" src="./icon.svg" alt="Whop and Webflow" /><div><h1>Whop Checkout</h1><p>Payments, right where you design.</p></div><span className="version">0.1</span></header>
-    {!inDesigner && <div className="preview-notice">Local preview · Open inside Webflow to add elements to your site.</div>}
-    <section className="card">
-      <div className="section-heading"><span className="step">1</span><h2>Choose your checkout</h2></div>
-      <div className="segments" aria-label="Checkout type">
-        <button aria-pressed={config.mode === 'button'} onClick={() => set('mode', 'button')}>↗ Checkout button</button>
-        <button aria-pressed={config.mode === 'embed'} onClick={() => set('mode', 'embed')}>▤ Embedded checkout</button>
-      </div>
-      <label htmlFor="environment">Environment</label><select id="environment" value={config.environment} onChange={event => set('environment', event.target.value as CheckoutConfig['environment'])}><option value="sandbox">Sandbox · test payments</option><option value="production">Production · real payments</option></select>
-      <label htmlFor="plan">Plan ID or checkout link</label><input id="plan" value={config.plan} onChange={event => set('plan', event.target.value)} placeholder="plan_… or https://whop.com/checkout/…" autoComplete="off" spellCheck={false}/>
-      <p className="help">Copy it from Checkout links in your <a href={config.environment === 'sandbox' ? 'https://sandbox.whop.com/dashboard' : 'https://whop.com/dashboard'} target="_blank" rel="noreferrer">Whop dashboard ↗</a>.</p>
-      <label htmlFor="label">Button label</label><input id="label" maxLength={100} value={config.label} onChange={event => set('label', event.target.value)}/>
-      {config.mode === 'embed' && <><label htmlFor="theme">Checkout appearance</label><select id="theme" value={config.theme} onChange={event => set('theme', event.target.value as CheckoutConfig['theme'])}><option value="light">Light</option><option value="dark">Dark</option><option value="system">Match visitor’s device</option></select><label htmlFor="return">Return URL <span className="muted">optional</span></label><input id="return" type="url" value={config.returnUrl} onChange={event => set('returnUrl', event.target.value)} placeholder="https://your-site.com/payment-status"/><p className="help">For returns from bank or 3D Secure verification. Your page should handle succeeded, failed, and canceled outcomes.</p></>}
-    </section>
-    <section className="card">
-      <div className="section-heading"><span className="step">2</span><h2>Place it on your page</h2><button className="text-button" disabled={busy || !inDesigner} onClick={() => void run(async () => { const selected = await selectedConfig(); if (!selected) throw new Error('Select an existing Whop checkout first.'); setConfig(selected); return 'Loaded the selected checkout.'; })}>Load selected</button></div>
-      <div className={`checkout-preview ${config.mode}`}><span className="eyebrow">{config.environment === 'sandbox' ? 'SANDBOX PREVIEW' : 'PRODUCTION PREVIEW'}</span>{config.mode === 'button' ? <span className="sample-button">{config.label || 'Buy now'} <span>↗</span></span> : <div className="embed-preview"><strong>Your Whop checkout</strong><p>Price and payment methods come from your plan.</p><span className="preview-line"/><span className="preview-line short"/></div>}</div>
-      <p className="help">Select a section or container in Webflow. Style the added element with the usual Designer controls.</p>
-      <button className="primary" disabled={busy || !inDesigner || (config.mode === 'embed' && !installed)} onClick={() => void run(async () => { await insertCheckout(config); return 'Checkout added. Publish your site to try it live.'; })}>{busy ? 'Working…' : `Add ${config.mode === 'button' ? 'checkout button' : 'embedded checkout'}`}</button>
-      <div className="button-row"><button disabled={busy || !inDesigner} onClick={() => void run(async () => { await updateCheckout(config); return 'Selected checkout updated.'; })}>Update selected</button><button disabled={busy} onClick={preview}>Open checkout ↗</button></div>
-    </section>
-    <section className="card connection"><div className="section-heading"><span className={`dot ${connected ? 'on' : ''}`}/><h2>{connected ? 'Site connected' : 'Connect embedded checkout'}</h2></div><p className="help">Authorize Webflow once to install the checkout scripts. Hosted checkout buttons work without this step.</p>
-      <div className="button-row"><a className="button" href={`${__API_ORIGIN__}/auth/start`} target="_blank" rel="noreferrer">Connect Webflow ↗</a><button disabled={busy || !inDesigner} onClick={() => void run(() => api('status'))}>Check connection</button></div>
-      {connected && <button className="primary" disabled={busy || installed} onClick={() => void run(() => api('install'))}>{installed ? 'Embedded checkout enabled' : 'Enable embedded checkout'}</button>}
-      {connected && <details><summary>Remove integration</summary><p className="help">Removes this app’s checkout scripts from the site. Publish afterward, then remove any checkout elements in the Designer and uninstall the app.</p><button disabled={busy} onClick={() => void run(() => api('disconnect'))}>Remove scripts and disconnect</button></details>}
-    </section>
-    {message && <div role={error ? 'alert' : 'status'} className={`notice ${error ? 'error' : 'success'}`}>{message}</div>}
-    <footer><a href={REFERRAL_URL} target="_blank" rel="sponsored noreferrer">Start selling with Whop ↗</a><span className="disclosure">I may earn a commission.</span><div><a href={`${__API_ORIGIN__}/guide.html`} target="_blank" rel="noreferrer">Setup guide</a><span>·</span><a href={`${__API_ORIGIN__}/privacy.html`} target="_blank" rel="noreferrer">Privacy</a><span>·</span><a href="https://github.com/yshmarov" target="_blank" rel="noreferrer">By Yaroslav Shmarov</a></div></footer>
-  </main>;
+  return <Theme accentColor="orange" grayColor="gray" infoColor="blue" successColor="green" appearance="inherit" hasBackground={false} className={`checkout-theme ${ui.appearance}`}>
+    <main className="app-shell">
+      <header className="app-header">
+        <img className="brand-mark" src="./icon.svg" alt="" />
+        <div><Heading size="5" weight="semi-bold">Whop Checkout</Heading><Text render={<p />} size="2" color="gray">Payments, right where you design.</Text></div>
+        <Badge color="gray" variant="soft">Webflow</Badge>
+      </header>
+      {!inDesigner && <Callout.Root color="info" className="preview-notice"><Callout.Description>Preview mode · Open in Webflow to add checkout to your site.</Callout.Description></Callout.Root>}
+
+      <section className="app-section" aria-labelledby="choose-heading">
+        <div className="section-heading"><span className="step" aria-hidden="true">1</span><Heading render={<h2 />} id="choose-heading" size="3">Choose your checkout</Heading></div>
+        <SegmentedControl.Root value={config.mode} onValueChange={(value: unknown) => { if (value === 'button' || value === 'embed') set('mode', value); }}>
+          <SegmentedControl.List aria-label="Checkout type" className="checkout-type">
+            <SegmentedControl.Trigger value="button">Checkout button</SegmentedControl.Trigger>
+            <SegmentedControl.Trigger value="embed">Embedded checkout</SegmentedControl.Trigger>
+          </SegmentedControl.List>
+          <div className="field"><Text render={<label htmlFor="environment" />} size="2" weight="medium">Environment</Text>
+            <Choice id="environment" value={config.environment} onChange={value => set('environment', value)} options={[{ value: 'sandbox', label: 'Sandbox · test payments' }, { value: 'production', label: 'Production · real payments' }]} />
+          </div>
+          <div className="field"><Text render={<label htmlFor="plan" />} size="2" weight="medium">Plan ID or checkout link</Text>
+            <TextField.Input id="plan" value={config.plan} onChange={event => set('plan', event.target.value)} placeholder="plan_… or https://whop.com/checkout/…" autoComplete="off" spellCheck={false} aria-describedby="plan-help" />
+            <Text render={<p />} id="plan-help" className="help" size="2" color="gray">Copy it from Checkout links in your <a href={config.environment === 'sandbox' ? 'https://sandbox.whop.com/dashboard' : 'https://whop.com/dashboard'} target="_blank" rel="noreferrer">Whop dashboard ↗</a>.</Text>
+          </div>
+          <SegmentedControl.Content value="button">
+            <div className="field"><Text render={<label htmlFor="label" />} size="2" weight="medium">Button label</Text><TextField.Input id="label" maxLength={100} value={config.label} onChange={event => set('label', event.target.value)} /></div>
+          </SegmentedControl.Content>
+          <SegmentedControl.Content value="embed">
+            <div className="field"><Text render={<label htmlFor="embed-label" />} size="2" weight="medium">Button label</Text><TextField.Input id="embed-label" maxLength={100} value={config.label} onChange={event => set('label', event.target.value)} /></div>
+            <div className="field"><Text render={<label htmlFor="checkout-theme" />} size="2" weight="medium">Checkout appearance</Text>
+              <Choice id="checkout-theme" value={config.theme} onChange={value => set('theme', value)} options={[{ value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }, { value: 'system', label: 'Match visitor’s device' }]} />
+            </div>
+            <div className="field"><Text render={<label htmlFor="return" />} size="2" weight="medium">Return URL <Text color="gray">(optional)</Text></Text>
+              <TextField.Input id="return" type="url" value={config.returnUrl} onChange={event => set('returnUrl', event.target.value)} placeholder="https://your-site.com/payment-status" aria-describedby="return-help" />
+              <Text render={<p />} id="return-help" className="help" size="2" color="gray">For bank or 3D Secure verification. Handle succeeded, failed, and canceled outcomes on your page.</Text>
+            </div>
+          </SegmentedControl.Content>
+        </SegmentedControl.Root>
+      </section>
+
+      <section className="app-section" aria-labelledby="place-heading">
+        <div className="section-heading"><span className="step" aria-hidden="true">2</span><Heading render={<h2 />} id="place-heading" size="3">Place it on your page</Heading>
+          <Button variant="ghost" color="gray" size="1" className="load-selected" disabled={busy || !inDesigner} onClick={() => void run(async () => { const selected = await selectedConfig(); if (!selected) throw new Error('Select an existing Whop checkout first.'); setConfig(selected); return 'Loaded the selected checkout.'; })}>Load selected</Button>
+        </div>
+        <div className="checkout-preview">
+          <Text size="1" color="gray">{config.environment === 'sandbox' ? 'Sandbox preview' : 'Production preview'}</Text>
+          {config.mode === 'button' ? <span className="sample-button">{config.label || 'Buy now'} <span aria-hidden="true">↗</span></span> : <div className={`embed-preview ${config.theme === 'system' ? ui.appearance : config.theme}`}><strong>Your Whop checkout</strong><p>Price and payment methods come from your plan.</p><span className="preview-line" /><span className="preview-line short" /></div>}
+        </div>
+        <Text render={<p />} className="help" size="2" color="gray">Select a section or container in Webflow. Style the added element with the Designer controls.</Text>
+        <Button size="3" variant="solid" color="orange" className="full-width" loading={busy} disabled={busy || !inDesigner || (config.mode === 'embed' && !installed)} onClick={() => void run(async () => { await insertCheckout(config); return 'Checkout added. Publish your site to try it live.'; })}>Add {config.mode === 'button' ? 'checkout button' : 'embedded checkout'}</Button>
+        <div className="button-row"><Button disabled={busy || !inDesigner} onClick={() => void run(async () => { await updateCheckout(config); return 'Selected checkout updated.'; })}>Update selected</Button><Button disabled={busy} onClick={preview}>Open checkout ↗</Button></div>
+      </section>
+
+      <section className="app-section connection" aria-labelledby="connect-heading">
+        <div className="section-heading"><span className={`dot ${connected ? 'on' : ''}`} aria-hidden="true" /><Heading render={<h2 />} id="connect-heading" size="3">{connected ? 'Site connected' : 'Connect embedded checkout'}</Heading></div>
+        <Text render={<p />} className="help" size="2" color="gray">Authorize Webflow once to install the checkout scripts. Checkout buttons work without this step.</Text>
+        <div className="button-row"><Button render={<a href={`${__API_ORIGIN__}/auth/start`} target="_blank" rel="noreferrer" />} nativeButton={false}>Connect Webflow ↗</Button><Button disabled={busy || !inDesigner} onClick={() => void run(() => api('status'))}>Check connection</Button></div>
+        {connected && <Button variant="solid" color="orange" size="3" className="full-width" disabled={busy || installed} onClick={() => void run(() => api('install'))}>{installed ? 'Embedded checkout enabled' : 'Enable embedded checkout'}</Button>}
+        {connected && <details><summary>Remove integration</summary><Text render={<p />} className="help" size="2" color="gray">Removes this app’s checkout scripts. Publish afterward, remove its checkout elements, then uninstall the app.</Text><Button color="red" variant="soft" disabled={busy} onClick={() => void run(() => api('disconnect'))}>Remove scripts and disconnect</Button></details>}
+      </section>
+      {message && <Callout.Root role={error ? 'alert' : 'status'} color={error ? 'danger' : 'success'} className="notice"><Callout.Description>{message}</Callout.Description></Callout.Root>}
+      <footer className="app-footer">
+        <div className="theme-control"><Text render={<label htmlFor="ui-theme" />} size="2" color="gray">App theme</Text><Choice<ThemeChoice> id="ui-theme" value={ui.choice} onChange={ui.setChoice} compact options={[{ value: 'system', label: inDesigner ? 'Follow Webflow' : 'System' }, { value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }]} /></div>
+        <a href={REFERRAL_URL} target="_blank" rel="sponsored noreferrer">Start selling with Whop ↗</a>
+        <Text render={<small />} size="1" color="gray" className="disclosure">I may earn a commission.</Text>
+        <nav aria-label="Help"><a href={`${__API_ORIGIN__}/guide.html`} target="_blank" rel="noreferrer">Setup guide</a><a href={`${__API_ORIGIN__}/privacy.html`} target="_blank" rel="noreferrer">Privacy</a><a href="https://github.com/yshmarov" target="_blank" rel="noreferrer">Yaroslav Shmarov</a></nav>
+      </footer>
+    </main>
+  </Theme>;
 }
 
 const root = document.getElementById('root');

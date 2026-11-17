@@ -1,4 +1,5 @@
 import { checkoutAttributes, checkoutUrl, validateConfig, type CheckoutConfig } from './config';
+import { orange } from '@frosted-ui/colors';
 
 export async function insertCheckout(input: CheckoutConfig): Promise<void> {
   const config = validateConfig(input);
@@ -25,7 +26,7 @@ export async function insertCheckout(input: CheckoutConfig): Promise<void> {
     if (!style) {
       style = await webflow.createStyle(name);
       await style.setProperties(config.mode === 'button' ? {
-        'display': 'inline-block', 'background-color': '#f4512b', 'color': '#ffffff',
+        'display': 'inline-block', 'background-color': orange.orange9, 'color': '#000000',
         'padding-top': '14px', 'padding-bottom': '14px', 'padding-left': '24px', 'padding-right': '24px',
         'border-top-left-radius': '8px', 'border-top-right-radius': '8px',
         'border-bottom-left-radius': '8px', 'border-bottom-right-radius': '8px', 'text-decoration': 'none',
