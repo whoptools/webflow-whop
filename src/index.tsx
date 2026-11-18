@@ -58,7 +58,7 @@ function App() {
   return <Theme accentColor="orange" grayColor="gray" infoColor="blue" successColor="green" appearance="inherit" hasBackground={false} className={`checkout-theme ${ui.appearance}`}>
     <main className="app-shell">
       <header className="app-header">
-        <img className="brand-mark" src="./icon.svg" alt="" />
+        <img className="brand-mark" src="./icon.png" alt="" />
         <div><Heading size="5" weight="semi-bold">Whop Checkout for Webflow</Heading><Text render={<p />} size="2" color="gray">Payments, right where you design.</Text></div>
         <Badge color="gray" variant="soft">Webflow</Badge>
       </header>
