@@ -4,14 +4,12 @@ import 'dotenv/config';
 import { build } from 'esbuild';
 import { mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { buildUiAssets } from './ui-assets.mjs';
 
 const api = process.env.PUBLIC_URL ?? 'http://localhost:4319';
 if (process.env.NODE_ENV === 'production' && !api.startsWith('https://')) throw new Error('Set an HTTPS PUBLIC_URL before building for production.');
 await mkdir('dist/review', { recursive: true });
 await mkdir('dist/storefront', { recursive: true });
 await mkdir('site/assets', { recursive: true });
-await buildUiAssets();
 await build({ entryPoints: ['src/index.tsx'], bundle: true, minify: true, sourcemap: 'external', outfile: 'dist/review/bundle.js', target: 'es2022', define: { __API_ORIGIN__: JSON.stringify(api), 'process.env.NODE_ENV': '"production"' } });
 await copyFile('dist/review/bundle.js', 'public/bundle.js');
 await copyFile('dist/review/bundle.css', 'public/bundle.css');

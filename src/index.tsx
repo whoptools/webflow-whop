@@ -62,7 +62,7 @@ function App() {
         <div><Heading size="5" weight="semi-bold">Whop Checkout for Webflow</Heading><Text render={<p />} size="2" color="gray">Payments, right where you design.</Text></div>
         <Badge color="gray" variant="soft">Webflow</Badge>
       </header>
-      <a className="signup-link" href={REFERRAL_URL} target="_blank" rel="sponsored noreferrer">Create a Whop account ↗</a>
+      <Button size="2" variant="solid" color="orange" className="signup-button" nativeButton={false} render={<a href={REFERRAL_URL} target="_blank" rel="sponsored noreferrer" />}>Create a Whop account</Button>
       {!inDesigner && <Callout.Root color="info" className="preview-notice"><Callout.Description>Preview mode · Open in Webflow to add checkout to your site.</Callout.Description></Callout.Root>}
 
       <section className="app-section" aria-labelledby="choose-heading">
@@ -117,7 +117,7 @@ function App() {
       </section>
       {message && <Callout.Root role={error ? 'alert' : 'status'} color={error ? 'danger' : 'success'} className="notice"><Callout.Description>{message}</Callout.Description></Callout.Root>}
       <footer className="app-footer">
-        <nav aria-label="Help"><a href={`${__API_ORIGIN__}/guide.html`} target="_blank" rel="noreferrer">Setup guide</a><a href={`${__API_ORIGIN__}/privacy.html`} target="_blank" rel="noreferrer">Privacy</a><a href="https://github.com/yshmarov" target="_blank" rel="noreferrer">Yaroslav Shmarov</a></nav>
+        <nav aria-label="Help"><a href={`${__API_ORIGIN__}/guide.html`} target="_blank" rel="noreferrer">Setup guide</a><a href={`${__API_ORIGIN__}/privacy.html`} target="_blank" rel="noreferrer">Privacy</a><a href="https://github.com/whoptools/webflow-whop" target="_blank" rel="noreferrer">Source code</a><a href="https://whoptools.com/" target="_blank" rel="noreferrer">WhopTools</a></nav>
       </footer>
     </main>
   </Theme>;

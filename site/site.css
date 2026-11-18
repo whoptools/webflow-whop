@@ -1,0 +1,14 @@
+/* Service pages. Tokens, header, footer and buttons come from /extension/whoptools/whoptools.css. */
+.hero .mark { inline-size: 1.5rem; block-size: 1.5rem; border-radius: 4px; }
+.availability { margin-block-start: 1rem; color: var(--wt-muted); font-size: .8125rem; }
+.features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 0 0 1.5rem; padding: 0; list-style: none; counter-reset: feature; }
+.features li { padding: 1.25rem; border: 1px solid var(--wt-border); border-radius: 12px; color: var(--wt-muted); font-size: .9375rem; line-height: 1.6; counter-increment: feature; }
+.features li::before { content: counter(feature, decimal-leading-zero); display: block; margin-block-end: .5rem; color: var(--wt-muted); font: .75rem var(--wt-mono); }
+.features strong { display: block; margin-block-end: .25rem; color: var(--wt-text); font-weight: 600; }
+.wt-prose code { padding: .125rem .375rem; border-radius: 4px; background: var(--wt-surface); }
+.review { display: grid; gap: 1rem; }
+.review video { inline-size: 100%; max-block-size: 72vh; border: 1px solid var(--wt-border); border-radius: 12px; background: var(--wt-surface); }
+.review video::cue { font-size: 1rem; }
+.review p { color: var(--wt-muted); }
+@media (max-width: 47.99rem) { .features { grid-template-columns: 1fr; } }
+@media (forced-colors: active) { .features li { border-color: CanvasText; } }
