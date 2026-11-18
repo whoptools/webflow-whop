@@ -50,7 +50,7 @@ On a host already running Kamal Proxy, use the override instead of starting Cadd
 ```sh
 docker compose -f compose.yaml -f deploy/compose.kamal.yaml up -d --no-build --wait app
 docker exec kamal-proxy kamal-proxy deploy whoptools-wf-checkout \
-  --target webflow-whop-app:4319 --host wf-checkout.whoptools.com \
+  --target webflow-whop-app:4319 --host webflow-checkout.whoptools.com --host wf-checkout.whoptools.com \
   --tls --health-check-path /health
 ```
 
@@ -62,12 +62,14 @@ On a shared host, build in a separate resource-limited builder rather than chang
 docker buildx create --name webflow-whop-builder --driver docker-container \
   --driver-opt memory=1g,memory-swap=1536m,cpu-quota=100000,cpu-period=100000
 docker buildx build --builder webflow-whop-builder --load \
-  --build-arg PUBLIC_URL=https://wf-checkout.whoptools.com \
+  --build-arg PUBLIC_URL=https://webflow-checkout.whoptools.com \
   -t whop-checkout:0.1.5 .
 docker buildx stop webflow-whop-builder
 ```
 
 For a domain migration, keep the previous hostname routes and set `LEGACY_HOSTS` to their comma-separated hostnames. Browser pages redirect to the new domain before OAuth cookies are created; previously published runtime URLs continue serving their original files.
+
+Current hostnames (cutover November 18, 2026): `APP_DOMAIN=webflow-checkout.whoptools.com` is canonical, and the Webflow app's OAuth redirect URI is `https://webflow-checkout.whoptools.com/auth/callback`. `wf-checkout.whoptools.com`, `webflow.whoptools.com` and `webflow-whop.superails.com` are listed in `LEGACY_HOSTS`: browser GET/HEAD requests receive a 308 to the canonical host, while `/runtime/*` scripts (referenced by published merchant sites), API calls and `/health` are served in place. Keep those routes and DNS records.
 
 The standalone Caddy instructions below apply only to a dedicated host with free HTTP/HTTPS ports.
 

@@ -4,7 +4,7 @@ Report suspected vulnerabilities privately through [GitHub private vulnerability
 
 ## Supported versions
 
-Fixes target the current `main` branch, which is what `wf-checkout.whoptools.com` runs, and the latest Designer Extension bundle.
+Fixes target the current `main` branch, which is what `webflow-checkout.whoptools.com` runs, and the latest Designer Extension bundle.
 
 ## What to include
 

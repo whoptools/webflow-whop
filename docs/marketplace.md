@@ -5,6 +5,8 @@ App: **Whop Checkout** · Creator: **Yaroslav Shmarov** · Brand: **WhopTools**
 - Category: Ecommerce
 - Pricing: Free (all app features; separate Webflow and Whop charges may apply)
 - Visibility: Public, pending Marketplace review
+> November 18, 2026: the service moved to `https://webflow-checkout.whoptools.com`; the URLs below are the submitted 0.1.5 values and still work through redirects. The submission form previously rejected hostnames containing “Webflow”, so validate the new hostname there before changing the listing.
+
 - Homepage: https://wf-checkout.whoptools.com
 - Installation: https://wf-checkout.whoptools.com/auth/start
 - Documentation: https://wf-checkout.whoptools.com/guide.html

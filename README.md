@@ -6,13 +6,13 @@
 [![Webflow Marketplace: in review](https://img.shields.io/badge/Webflow_Marketplace-in_review-146ef5)](docs/marketplace.md)
 [![Node 22.13+](https://img.shields.io/badge/Node-22.13%2B-5fa04e)](package.json)
 [![MIT license](https://img.shields.io/github/license/whoptools/webflow-whop)](LICENSE)
-[![Live demo](https://img.shields.io/badge/live_demo-wf--checkout.whoptools.com-fa4616)](https://wf-checkout.whoptools.com/)
+[![Live demo](https://img.shields.io/badge/live_demo-webflow--checkout.whoptools.com-fa4616)](https://webflow-checkout.whoptools.com/)
 
 Add Whop checkout buttons and embedded payments from the Webflow Designer.
 
 Built by [Yaroslav Shmarov](https://github.com/yshmarov), author of [omniauth-whop](https://github.com/whoptools/omniauth-whop) and [pay-whop](https://github.com/whoptools/pay-whop).
 
-Hosted at [wf-checkout.whoptools.com](https://wf-checkout.whoptools.com) and available for internal Webflow workspace testing. Public installation is pending Webflow Marketplace review.
+Hosted at [webflow-checkout.whoptools.com](https://webflow-checkout.whoptools.com) and available for internal Webflow workspace testing. Public installation is pending Webflow Marketplace review.
 
 ![Whop Checkout with the approved checkout-card logo](docs/screenshots/checkout-logo-preview.jpg)
 
@@ -108,6 +108,6 @@ Open-source Whop integrations. More at [whoptools.com](https://whoptools.com).
 
 | Project | Live demo | Source |
 | --- | --- | --- |
-| Whop Checkout for Webflow | [wf-checkout.whoptools.com](https://wf-checkout.whoptools.com/) | [webflow-whop](https://github.com/whoptools/webflow-whop) |
-| OmniAuth Whop | [omniauth.whoptools.com](https://omniauth.whoptools.com/) | [omniauth-whop](https://github.com/whoptools/omniauth-whop) |
+| Whop Checkout for Webflow | [webflow-checkout.whoptools.com](https://webflow-checkout.whoptools.com/) | [webflow-whop](https://github.com/whoptools/webflow-whop) |
+| OmniAuth Whop | [omniauth-ruby.whoptools.com](https://omniauth-ruby.whoptools.com/) | [omniauth-whop](https://github.com/whoptools/omniauth-whop) |
 | Pay Whop | [pay-rails.whoptools.com](https://pay-rails.whoptools.com/) | [pay-whop](https://github.com/whoptools/pay-whop) |

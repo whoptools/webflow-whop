@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/whoptools/webflow-whop/security/advisories/new
     about: Report exploitable vulnerabilities privately.
   - name: Live demo
-    url: https://wf-checkout.whoptools.com/
+    url: https://webflow-checkout.whoptools.com/
     about: Try the hosted demo before reporting.
