@@ -1,0 +1,30 @@
+name: Bug report
+description: Report unexpected checkout, Designer or hosted-service behavior.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For exploitable vulnerabilities, use [private security reporting](https://github.com/whoptools/webflow-whop/security/advisories/new).
+        Use synthetic data. Do not include Webflow tokens, Whop API keys, private checkout URLs, customer details or card/bank data.
+  - type: textarea
+    id: versions
+    attributes:
+      label: Versions and environment
+      description: App version or deployment date, browser, Webflow plan, and sandbox or production Whop environment.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Steps or a small example that shows the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Include redacted error messages or HTTP status codes when available.
+    validations:
+      required: true

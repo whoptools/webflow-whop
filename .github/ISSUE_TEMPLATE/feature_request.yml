@@ -1,0 +1,21 @@
+name: Feature request
+description: Propose a Webflow checkout workflow supported by Whop.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: What should you be able to do? What is missing today?
+    validations:
+      required: true
+  - type: textarea
+    id: provider_api
+    attributes:
+      label: Whop and platform support
+      description: Link relevant Whop or platform documentation and note known restrictions.
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Proposed behavior
+      description: Describe the expected result, including failure states.
