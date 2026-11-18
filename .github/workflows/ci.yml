@@ -57,7 +57,7 @@ jobs:
           docker inspect webflow-whop-app --format '{{range .Mounts}}{{if eq .Destination "/app/data"}}{{.Name}}{{end}}{{end}}' | grep -qx webflow-whop_app_data
           docker compose -f compose.yaml -f deploy/compose.kamal.yaml -f deploy/compose.storage.yaml exec -T app node scripts/backup.mjs
           docker compose -f compose.yaml -f deploy/compose.kamal.yaml -f deploy/compose.storage.yaml down
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: designer-extension-development
           path: bundle.zip
