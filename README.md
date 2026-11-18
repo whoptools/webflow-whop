@@ -106,4 +106,4 @@ Open-source Whop integrations that share one design and one home at [whoptools.c
 | --- | --- | --- |
 | Whop Checkout for Webflow | [wf-checkout.whoptools.com](https://wf-checkout.whoptools.com/) | [webflow-whop](https://github.com/whoptools/webflow-whop) |
 | OmniAuth Whop | [omniauth.whoptools.com](https://omniauth.whoptools.com/) | [omniauth-whop](https://github.com/whoptools/omniauth-whop) |
-| Pay Whop | [pay.whoptools.com](https://pay.whoptools.com/) | [pay-whop](https://github.com/whoptools/pay-whop) |
+| Pay Whop | [pay-rails.whoptools.com](https://pay-rails.whoptools.com/) | [pay-whop](https://github.com/whoptools/pay-whop) |
