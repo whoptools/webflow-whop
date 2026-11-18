@@ -100,7 +100,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Report vulnerabilities privately per [SE
 
 ## Part of WhopTools
 
-Open-source Whop integrations that share one design and one home at [whoptools.com](https://whoptools.com):
+Open-source Whop integrations. More at [whoptools.com](https://whoptools.com).
 
 | Project | Live demo | Source |
 | --- | --- | --- |

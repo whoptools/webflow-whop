@@ -9,5 +9,6 @@ node scripts/kit.mjs --product webflow --out <this directory>
 
 `whoptools.css` contains Inter, the Frosted UI light/dark tokens (`--wt-*`), the shared header,
 footer and button styles. `header.html` and `footer.html` are the shared navigation markup.
-`create-whop-account.svg` is the signup button for Markdown READMEs.
+`create-whop-account.svg` is the signup button for Markdown READMEs. `github.svg` is the inline
+GitHub mark for source-code links: `<a class="wt-button wt-button--surface" href="https://github.com/whoptools/<repo>">{github.svg}Source code</a>`.
 See STYLE_GUIDE.md in the website repository for usage.

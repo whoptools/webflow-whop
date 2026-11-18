@@ -51,7 +51,8 @@ details { margin-block-start: 1rem; font-size: .875rem; }
 summary { cursor: pointer; color: var(--wt-muted); }
 .app-footer { border-block-start: 1px solid var(--wt-border); padding-block-start: 1.25rem; font-size: .875rem; }
 .app-footer nav { display: flex; flex-wrap: wrap; gap: .25rem 1rem; margin-block-start: .75rem; font-size: .75rem; }
-.app-footer nav a { display: inline-flex; align-items: center; min-block-size: 2rem; color: var(--wt-muted); }
+.app-footer nav a { display: inline-flex; align-items: center; gap: .375rem; min-block-size: 2rem; color: var(--wt-muted); }
+.source-link svg { inline-size: 1em; block-size: 1em; fill: currentColor; }
 @media (max-width: 380px) {
   .app-shell { padding: 1rem; }
   .app-header > .fui-Badge { display: none; }
