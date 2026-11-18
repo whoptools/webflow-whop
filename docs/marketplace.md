@@ -71,7 +71,8 @@ Designer panel, service pages, favicon, README and current Marketplace icon
 assets use the same approved artwork in the logo-refresh branch. Both original
 variants are preserved in `docs/assets/brand/`. Historical review captures remain
 unchanged. Hosted pages and the installed extension receive the updated assets
-after the source PR is merged and the replacement bundle is uploaded.
+after the source PR is merged. The replacement Designer extension bundle is
+already published for internal workspace testing.
 
 Matching production artifacts, built with
 `PUBLIC_URL=https://webflow-checkout.whoptools.com`:
@@ -79,5 +80,7 @@ Matching production artifacts, built with
 - `bundle.zip` SHA-256: `5287a472b0435e7e208204d82b6be6fd3cafc2f3aa1c55ae8395ac151ee74968`
 - `review.zip` SHA-256: `ec574b94f9ad4e4116d78da0b31359a872c80554e2c2bcf28874af1f053ecd0e`
 
-The bundle and private review package are prepared; no replacement extension
-bundle or Marketplace submission was uploaded as part of the app-icon change.
+The production bundle was uploaded for internal workspace testing on November
+19, 2026. Webflow's version history shows the logo refresh and source revision
+`dbbcde612402a8d1fc5a85b10693698c9e00e215`. The app icon is saved in app settings.
+The private review package is prepared; Marketplace submission remains separate.
