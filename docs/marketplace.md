@@ -44,7 +44,9 @@ The existing sandbox plan belongs to the original test organization. Use **WhopT
 
 ## Submission assets
 
-- `docs/assets/Whop Checkout orange and blue WW icon.png`: 900×900, solid background, under 50 KB.
+- `docs/assets/icon.png`: approved checkout-card logo with the Whop mark, 900×900 PNG.
+- `public/icon.png`: matching 256×256 app icon for Webflow settings.
+- Original artwork with and without the Whop mark: `docs/assets/brand/`.
 - `docs/assets/marketplace/01-checkout-buttons.jpg`: Configure a native checkout button in the Designer.
 - `docs/assets/marketplace/02-embedded-checkout.jpg`: Configure an embedded checkout and appearance.
 - `docs/assets/marketplace/03-script-setup.jpg`: Enable the checkout runtime for a connected site.
@@ -61,3 +63,24 @@ Refresh the listing screenshots and narrated walkthrough for Frosted UI 0.1.5. P
 
 - `bundle.zip` SHA-256: `7ce80efaf6aa4515b177c7d8e080acaa31a0b19ac8c8c659e1bf337385d3f1b5`
 - `review.zip` SHA-256: `fb6335f528c00ccdd5d8cb16d0b32c2d128c52fedeaaf64a97dcf342e7f1e324`
+
+## Approved logo refresh — November 19, 2026
+
+The Whop-mark checkout-card icon is saved in the Webflow app settings. The
+Designer panel, service pages, favicon, README and current Marketplace icon
+assets use the same approved artwork in the logo-refresh branch. Both original
+variants are preserved in `docs/assets/brand/`. Historical review captures remain
+unchanged. Hosted pages and the installed extension receive the updated assets
+after the source PR is merged. The replacement Designer extension bundle is
+already published for internal workspace testing.
+
+Matching production artifacts, built with
+`PUBLIC_URL=https://webflow-checkout.whoptools.com`:
+
+- `bundle.zip` SHA-256: `5287a472b0435e7e208204d82b6be6fd3cafc2f3aa1c55ae8395ac151ee74968`
+- `review.zip` SHA-256: `ec574b94f9ad4e4116d78da0b31359a872c80554e2c2bcf28874af1f053ecd0e`
+
+The production bundle was uploaded for internal workspace testing on November
+19, 2026. Webflow's version history shows the logo refresh and source revision
+`dbbcde612402a8d1fc5a85b10693698c9e00e215`. The app icon is saved in app settings.
+The private review package is prepared; Marketplace submission remains separate.
