@@ -134,7 +134,7 @@
 
 /* Footer */
 .wt-footer { margin-block-start: auto; border-block-start: 1px solid var(--wt-border); background: var(--wt-subtle); color: var(--wt-muted); font-size: .875rem; }
-.wt-footer__inner { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr)); gap: 2rem; padding-block: 2.5rem 2rem; }
+.wt-footer__inner { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 2rem; padding-block: 2.5rem 2rem; }
 .wt-footer__about p { margin-block-start: .75rem; max-inline-size: 18rem; line-height: 1.6; }
 .wt-footer__title { margin: 0 0 .5rem; color: var(--wt-text); font-size: .875rem; font-weight: 600; }
 .wt-footer ul { margin: 0; padding: 0; list-style: none; }
@@ -154,8 +154,7 @@
   .wt-main { padding-block: 2rem 3rem; }
   :where(.wt-body) h1 { font-size: 1.75rem; }
   .wt-lead { font-size: 1rem; }
-  .wt-footer__inner { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  .wt-footer__about { grid-column: 1 / -1; }
+  .wt-footer__inner { grid-template-columns: 1fr; gap: 1.5rem; }
 }
 @media (prefers-reduced-motion: reduce) { .wt-button { transition: none; } }
 @media (forced-colors: active) {
