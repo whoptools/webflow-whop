@@ -45,7 +45,7 @@ void test('sets secure OAuth cookie and requests only configured scopes', async 
   assert.match(response.headers['set-cookie'][0], /HttpOnly/); assert.match(response.headers['set-cookie'][0], /Secure/);
   const redirect = new URL(response.headers.location);
   assert.equal(redirect.hostname, 'webflow.com'); assert.ok(redirect.searchParams.get('state'));
-  assert.doesNotMatch(redirect.search, /cms:|ecommerce:|workspace:/); store.db.close();
+  assert.doesNotMatch(redirect.search, /cms:|ecommerce:|workspace:|sites:write/); store.db.close();
 });
 void test('rejects missing site authorization without calling upstream', async () => {
   const { app, store } = setup();
