@@ -19,7 +19,7 @@ A product catalog picker and CMS synchronization would be a separate feature: th
 ## Platform requirements
 
 1. A hybrid app registration with Designer Extension + Data Client.
-2. `authorized_user:read`, `sites:read`, `sites:write`, `custom_code:read`, and `custom_code:write`. Custom Code requires OAuth, not a pasted site API token.
+2. `authorized_user:read`, `sites:read`, `custom_code:read`, and `custom_code:write`. Custom Code requires OAuth, not a pasted site API token.
 3. HTTPS service URL, exact OAuth callback, extension-origin allowlist, persistent storage, and an encryption key.
 4. Account two-factor authentication before uploading an extension. This account's upload control was disabled until 2FA setup.
 5. A site/workspace that allows custom code for the embedded mode. A normal link button does not need custom code.

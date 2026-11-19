@@ -1,0 +1,62 @@
+[
+  {
+    "id": "01-intro",
+    "title": "Whop Checkout for Webflow",
+    "narration": "Whop Checkout adds payment buttons and embedded payments to your Webflow site. This walkthrough shows the installed Designer extension, its connection flow, and the published sandbox demo. All app features are free; separate Webflow and Whop service charges may apply."
+  },
+  {
+    "id": "02-launch",
+    "title": "Open the Designer app",
+    "narration": "Open Apps in the Webflow Designer, select Whop Checkout, and choose Launch App. The orange checkout-card icon identifies the current release. The app follows your device appearance automatically. Its controls stay inside the Designer while you build your page."
+  },
+  {
+    "id": "03-oauth",
+    "title": "Connect your Webflow site",
+    "narration": "For embedded checkout, choose Connect Webflow. Webflow shows the identity, site and custom-code access the app needs. Select the site you want to connect. The app uses Webflow OAuth and does not ask for your Webflow password or a Whop merchant API key."
+  },
+  {
+    "id": "04-deny",
+    "title": "Cancel and recover",
+    "narration": "A user can cancel the authorization request. The app returns a clear cancellation message. No connection is created by declining this request. Open Connect Webflow again when you are ready to approve access for your site."
+  },
+  {
+    "id": "05-connected",
+    "title": "Approve the connection",
+    "narration": "Approve access to the selected site. Webflow returns to the connected page on the app website. Back in the Designer, choose Check connection. The backend verifies your current Designer identity and site before allowing checkout-script changes."
+  },
+  {
+    "id": "06-button",
+    "title": "Add a native checkout button",
+    "narration": "For a button, select Checkout button and choose Sandbox or Production to match your Whop plan. Paste the plan ID or checkout link and enter the button label. Select a container on your page, then choose Add checkout button. The native element can be styled with normal Webflow controls."
+  },
+  {
+    "id": "07-edit",
+    "title": "Load and update existing elements",
+    "narration": "Select a checkout created by this app and choose Load selected. Its current plan, environment and appearance are loaded into the panel. Make your changes, then choose Update selected. Existing merchant styling is preserved when the app updates checkout settings."
+  },
+  {
+    "id": "08-embed",
+    "title": "Configure embedded checkout",
+    "narration": "Choose Embedded checkout to place Whop payment fields in your page. Select light, dark or device appearance for the customer checkout. This setting controls the payment form independently of the app interface. A return URL is optional for handling payment outcomes on your own page."
+  },
+  {
+    "id": "09-install",
+    "title": "Enable the payment runtime",
+    "narration": "Enable embedded checkout after connecting your site. The backend registers a versioned checkout runtime and installs it through the Custom Code API, preserving other site scripts. Publish your Webflow site to apply installation or removal. Previously published runtime files remain available for existing sites."
+  },
+  {
+    "id": "10-published",
+    "title": "Test the published checkout",
+    "narration": "This is the published sandbox demo. Whop supplies the product price, payment methods and secure payment fields. The Webflow app does not receive card details. Merchant payments are processed by Whop; the integration does not create Webflow Ecommerce orders or restrict access to Webflow pages."
+  },
+  {
+    "id": "11-remove",
+    "title": "Remove the integration",
+    "narration": "To remove the integration, expand Remove integration and choose Remove scripts and disconnect. This removes the app\u2019s applied runtime and stored site connection. Publish afterward to remove the script from the live site, then remove checkout elements you no longer want and uninstall the app."
+  },
+  {
+    "id": "12-help",
+    "title": "Setup and support",
+    "narration": "Setup instructions, privacy information, terms and source code are linked from the app. The documentation covers connection, checkout configuration, publishing and removal. Reviewers can use their own Webflow session and the supplied sandbox plan; no separate app account or paid tier is required."
+  }
+]

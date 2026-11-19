@@ -86,3 +86,13 @@ The production bundle was uploaded for internal workspace testing on November
 19, 2026. Webflow's version history shows the logo refresh and source revision
 `dbbcde612402a8d1fc5a85b10693698c9e00e215`. The app icon is saved in app settings.
 The private review package is prepared; Marketplace submission remains separate.
+
+## Submission refresh in progress — November 19, 2026
+
+- The form is authenticated and the existing client ID passed ownership verification.
+- The four listing screenshots have fresh captures with the approved logo; see `docs/assets/marketplace/README.md`. A form-compatible 900×900 PNG is below 50 KB.
+- A replacement narrated walkthrough script and audio are prepared. OAuth captures and final rendering depend on settling the submission hostname.
+- The form explicitly rejects `webflow-checkout.whoptools.com` as containing the Webflow name. The listing has not been submitted with this address.
+- The current browser integration did not open the preflight or submission-form file pickers. Preflight receipt and artifact uploads remain pending.
+- The submission branch removes unused `sites:write`, keeps `sites:read` for OAuth site discovery and `custom_code:read/write` for runtime management, and prepares the existing Terms draft for publication. Registered runtime version is advanced to 0.1.5 for the hostname transition; archived runtime files remain intact.
+- The form's agreement and standing review-access confirmation remain unchecked. No new PR merge or Marketplace submission has been authorized by this update.
