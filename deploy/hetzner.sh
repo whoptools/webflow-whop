@@ -56,7 +56,7 @@ chmod 600 "$release/.env"
 compose "$release" config --quiet
 
 docker buildx build --builder webflow-whop-builder --load \
-  --build-arg PUBLIC_URL=https://webflow-checkout.whoptools.com \
+  --build-arg PUBLIC_URL=https://wf-checkout.whoptools.com \
   -t "whop-checkout:$revision" "$release"
 docker buildx stop webflow-whop-builder
 latest=$(git ls-remote "$repository" refs/heads/main | cut -f1)
@@ -68,7 +68,7 @@ fi
 replacing=true
 activate "$release"
 curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 2 \
-  --resolve webflow-checkout.whoptools.com:443:127.0.0.1 https://webflow-checkout.whoptools.com/health >/dev/null
+  --resolve wf-checkout.whoptools.com:443:127.0.0.1 https://wf-checkout.whoptools.com/health >/dev/null
 ln -sfn "$release" "$base/current"
 activated=true
-printf 'Deployed %s to https://webflow-checkout.whoptools.com/\n' "$revision"
+printf 'Deployed %s to https://wf-checkout.whoptools.com/\n' "$revision"

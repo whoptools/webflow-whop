@@ -29,7 +29,7 @@ class DeploymentTest(unittest.TestCase):
         self.script.write_text(source.replace('base=/opt/webflow-whop', f'base={self.base}').replace('/opt/pay-whop/shared/deploy.lock', str(self.base / 'shared' / 'deploy.lock')))
         self.command('flock', 'exit 0')
         self.command('git', 'printf "%s\\trefs/heads/main\\n" "$TEST_SHA"')
-        self.command('curl', 'if [[ ${FAIL_HEALTH:-} == yes && $* == *https://webflow-checkout.whoptools.com/health* ]]; then exit 42; fi')
+        self.command('curl', 'if [[ ${FAIL_HEALTH:-} == yes && $* == *https://wf-checkout.whoptools.com/health* ]]; then exit 42; fi')
         self.command('tar', '''
 while [[ $# -gt 0 ]]; do
   if [[ $1 == -C ]]; then destination=$2; break; fi

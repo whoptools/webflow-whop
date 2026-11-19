@@ -57,7 +57,11 @@ export function createApp(config: AppConfig, store: Store, fetcher: typeof fetch
   // Move browser sessions before setting OAuth cookies, while serving old script URLs in place.
   app.use((req, res, next) => {
     if (['GET', 'HEAD'].includes(req.method) && req.path !== '/health' && config.legacyHosts?.includes(req.hostname)) {
-      res.redirect(308, `${origin}${req.originalUrl}`); return;
+      // A former canonical host may still have a permanent redirect cached by
+      // returning visitors. A fresh target breaks that cycle when a move reverses.
+      const destination = new URL(`${origin}${req.originalUrl}`);
+      destination.searchParams.set('_wt_host', new URL(origin).hostname);
+      res.set('Cache-Control', 'no-store').redirect(302, destination.href); return;
     }
     next();
   });

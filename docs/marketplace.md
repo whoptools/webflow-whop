@@ -4,7 +4,7 @@ App: **Whop Checkout** · Creator: **Yaroslav Shmarov** · Brand: **WhopTools**
 
 - Category: Ecommerce
 - Pricing: Free (all app features; separate Webflow and Whop charges may apply)
-- Visibility: Public, pending Marketplace review
+- Visibility: Public submission in preparation
 > November 18, 2026: the service moved to `https://webflow-checkout.whoptools.com`; the URLs below are the submitted 0.1.5 values and still work through redirects. The submission form previously rejected hostnames containing “Webflow”, so validate the new hostname there before changing the listing.
 
 - Homepage: https://wf-checkout.whoptools.com
@@ -34,9 +34,8 @@ Features: Native checkout buttons; Embedded payments; Sandbox testing; Editable 
 
 - `authorized_user:read`: verify Designer identity using `POST /beta/token/resolve` before site actions.
 - `sites:read`: list authorized sites using `GET /v2/sites`.
-- `sites:write`: register the versioned runtime using `POST /v2/sites/:site_id/registered_scripts/hosted`.
 - `custom_code:read`: read applied scripts using `GET /v2/sites/:site_id/custom_code`.
-- `custom_code:write`: apply/remove the app's scripts using `PUT /v2/sites/:site_id/custom_code`, preserving unrelated scripts.
+- `custom_code:write`: register the versioned hosted runtime with `POST /v2/sites/:site_id/registered_scripts/hosted`, then apply/remove it using `PUT /v2/sites/:site_id/custom_code`, preserving unrelated scripts.
 
 ## Review access
 
@@ -46,7 +45,7 @@ The existing sandbox plan belongs to the original test organization. Use **WhopT
 
 ## Submission assets
 
-- `docs/assets/icon.png`: approved checkout-card logo with the Whop mark, 900×900 PNG.
+- `docs/assets/Whop Checkout icon.png`: approved checkout-card logo with the Whop mark, 900×900 opaque PNG below the form's 50 KB limit. Pristine artwork remains in `docs/assets/icon.png` and `docs/assets/brand/`.
 - `public/icon.png`: matching 256×256 app icon for Webflow settings.
 - Original artwork with and without the Whop mark: `docs/assets/brand/`.
 - `docs/assets/marketplace/01-checkout-buttons.jpg`: Configure a native checkout button in the Designer.
@@ -87,12 +86,28 @@ The production bundle was uploaded for internal workspace testing on November
 `dbbcde612402a8d1fc5a85b10693698c9e00e215`. The app icon is saved in app settings.
 The private review package is prepared; Marketplace submission remains separate.
 
-## Submission refresh in progress — November 19, 2026
+## Submission refresh — November 19, 2026
 
-- The form is authenticated and the existing client ID passed ownership verification.
-- The four listing screenshots have fresh captures with the approved logo; see `docs/assets/marketplace/README.md`. A form-compatible 900×900 PNG is below 50 KB.
-- A replacement narrated walkthrough script and audio are prepared. OAuth captures and final rendering depend on settling the submission hostname.
-- The form explicitly rejects `webflow-checkout.whoptools.com` as containing the Webflow name. The listing has not been submitted with this address.
-- The current browser integration did not open the preflight or submission-form file pickers. Preflight receipt and artifact uploads remain pending.
-- The submission branch removes unused `sites:write`, keeps `sites:read` for OAuth site discovery and `custom_code:read/write` for runtime management, and prepares the existing Terms draft for publication. Registered runtime version is advanced to 0.1.5 for the hostname transition; archived runtime files remain intact.
-- The form's agreement and standing review-access confirmation remain unchecked. No new PR merge or Marketplace submission has been authorized by this update.
+The owner chose to return to **https://wf-checkout.whoptools.com** after the form
+rejected `webflow-checkout.whoptools.com` for containing the Webflow name. The
+provider homepage/callback and production canonical host are restored. The
+newer hostname remains an alias. The form's trademark warning clears for the
+restored homepage/install URLs.
+
+The branch adds uncached temporary legacy redirects with a fresh canonical URL
+to break permanent redirects cached during the earlier hostname move. The
+existing published runtime remains served in place. Deployment builds and
+health checks use `wf-checkout.whoptools.com`.
+
+The four listing screenshots are refreshed with the approved logo. The
+replacement narration is prepared; final OAuth captures and video rendering
+follow the permission change's deployment. The branch removes unused
+`sites:write`, prepares the existing Terms draft for publication, and advances
+registered runtime version to 0.1.5 for the hostname transition.
+
+The form is authenticated, client ownership is verified, and listing text,
+features, URLs and backend metadata are entered. Preflight receipt, file
+uploads, final video link, standing review-access confirmation and the final
+agreement remain pending. File pickers in the current browser integration did
+not open for preflight or the embedded submission form. No submission has been
+sent; the final production bundle/review package must match the released source.

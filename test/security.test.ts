@@ -103,9 +103,12 @@ void test('domain migration redirects OAuth before creating cookies and preserve
     mkdirSync(path.join(root, 'dist/storefront'), { recursive: true });
     writeFileSync(path.join(root, 'dist/storefront/checkout.js'), '/* old published runtime */');
     const app = createApp({ ...config, root, legacyHosts: ['old.example'] }, store);
-    const response = await request(app).get('/auth/start?next=demo').set('Host', 'old.example').expect(308);
-    assert.equal(response.headers.location, 'https://app.example/auth/start?next=demo');
+    const response = await request(app).get('/auth/start?next=demo').set('Host', 'old.example').expect(302);
+    assert.equal(response.headers.location, 'https://app.example/auth/start?next=demo&_wt_host=app.example');
+    assert.equal(response.headers['cache-control'], 'no-store');
     assert.equal(response.headers['set-cookie'], undefined);
+    const unusualPath = await request(app).get('//attacker.example/path').set('Host', 'old.example').expect(302);
+    assert.equal(new URL(unusualPath.headers.location).origin, 'https://app.example');
     await request(app).get('/auth/start').set('Host', 'app.example').expect(302);
     const runtime = await request(app).get('/runtime/checkout.js').set('Host', 'old.example').set('Origin', 'https://merchant.example').expect(200);
     assert.equal(runtime.headers['access-control-allow-origin'], '*');

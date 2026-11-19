@@ -7,8 +7,8 @@ The four 1280×846 JPGs use fresh captures of the installed Designer extension a
 3. `03-script-setup.jpg`: verified connected site and enabled checkout runtime.
 4. `04-published-checkout.jpg`: actual published sandbox payment form.
 
-`walkthrough-script.json` contains the replacement review-video narration. The final recording still needs refreshed OAuth approval/denial captures after the submission hostname is settled.
+`walkthrough-script.json` contains the replacement review-video narration. The final recording still needs refreshed OAuth approval/denial captures after the reduced permissions are deployed.
 
 The separate `../Whop Checkout icon.png` is the approved artwork exported as a 900×900, 46,801-byte opaque PNG for the form's 50 KB limit. Pristine originals remain in `../brand/`.
 
-Current installed extension origin: `https://webflow-checkout.whoptools.com`. The form rejected this hostname because it contains “webflow”; the replacement hostname is awaiting the owner's choice. No Marketplace submission has been sent.
+The captures show the installed logo-refresh extension. The owner subsequently chose `https://wf-checkout.whoptools.com` as the canonical hostname after the form rejected `webflow-checkout.whoptools.com`. The matching replacement extension and final review artifacts will use the restored hostname. No Marketplace submission has been sent.
