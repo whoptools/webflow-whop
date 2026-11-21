@@ -19,7 +19,7 @@
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.6",
     "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
+    "@types/react-dom": "^19.3.0",
     "@types/supertest": "^7.2.1",
     "@webflow/designer-extension-typings": "^2.2.2",
     "@webflow/webflow-cli": "^2.17.0",
@@ -28,7 +28,7 @@
     "eslint-plugin-promise": "^7.2.1",
     "frosted-ui": "0.0.1-canary.164",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.3.1",
     "supertest": "^7.3.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.73.0"
@@ -40,7 +40,7 @@
     "express": "^5.3.0",
     "express-rate-limit": "^8.7.4",
     "helmet": "^8.3.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.3.1",
     "tsx": "^4.23.15",
     "webflow-api": "^3.3.4"
   },
