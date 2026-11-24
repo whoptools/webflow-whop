@@ -81,7 +81,7 @@
 .wt-brand:hover { text-decoration: none; }
 .wt-brand svg { inline-size: 1.5rem; block-size: 1.5rem; flex-shrink: 0; }
 .wt-brand .wt-mark-bg { fill: var(--wt-text); }
-.wt-brand .wt-mark-fg { fill: var(--wt-background); }
+.wt-brand .wt-mark-fg { fill: none; stroke: var(--wt-background); }
 
 /* Header */
 .wt-header { border-block-end: 1px solid var(--wt-border); background: var(--wt-background); }
@@ -181,5 +181,5 @@
   .wt-menu-button[data-current], .wt-menu a[aria-current='page'] { outline: 1px solid CanvasText; }
   .wt-menu { border-color: CanvasText; }
   .wt-brand .wt-mark-bg { fill: CanvasText; }
-  .wt-brand .wt-mark-fg { fill: Canvas; }
+  .wt-brand .wt-mark-fg { stroke: Canvas; }
 }
