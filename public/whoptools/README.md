@@ -11,4 +11,6 @@ node scripts/kit.mjs --product webflow --out <this directory>
 footer and button styles. `header.html` and `footer.html` are the shared navigation markup.
 `create-whop-account.svg` is the signup button for Markdown READMEs. `github.svg` is the inline
 GitHub mark for source-code links: `<a class="wt-button wt-button--surface" href="https://github.com/whoptools/<repo>">{github.svg}Source code</a>`.
+`favicon.svg` is the browser-tab icon: `<link rel="icon" href="/whoptools/favicon.svg" type="image/svg+xml">`;
+a Content-Security-Policy needs `img-src 'self'` for it.
 See STYLE_GUIDE.md in the website repository for usage.
