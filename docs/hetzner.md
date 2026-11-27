@@ -71,7 +71,13 @@ The canonical hostname is `wf-checkout.whoptools.com`; `webflow-checkout.whoptoo
 
 For a domain migration, keep the previous hostname routes and set `LEGACY_HOSTS` to their comma-separated hostnames. Browser pages redirect to the new domain before OAuth cookies are created; previously published runtime URLs continue serving their original files.
 
-Current hostnames (cutover November 18, 2026): `APP_DOMAIN=webflow-checkout.whoptools.com` is canonical, and the Webflow app's OAuth redirect URI is `https://wf-checkout.whoptools.com/auth/callback`. `wf-checkout.whoptools.com`, `webflow.whoptools.com` and `webflow-whop.superails.com` are listed in `LEGACY_HOSTS`: browser GET/HEAD requests receive a 308 to the canonical host, while `/runtime/*` scripts (referenced by published merchant sites), API calls and `/health` are served in place. Keep those routes and DNS records.
+Current hostnames (restored November 19, 2026): `APP_DOMAIN=wf-checkout.whoptools.com`
+is canonical, with OAuth callback `https://wf-checkout.whoptools.com/auth/callback`.
+`webflow-checkout.whoptools.com`, `webflow.whoptools.com` and
+`webflow-whop.superails.com` remain in `LEGACY_HOSTS`. Browser GET/HEAD requests
+receive temporary, uncached redirects with a fresh canonical query target;
+`/runtime/*` scripts, API calls and `/health` are served in place. Keep these
+routes, DNS records, the encryption key and persistent runtime files.
 
 The standalone Caddy instructions below apply only to a dedicated host with free HTTP/HTTPS ports.
 

@@ -5,15 +5,15 @@ App: **Whop Checkout** · Creator: **Yaroslav Shmarov** · Brand: **WhopTools**
 - Category: Ecommerce
 - Pricing: Free (all app features; separate Webflow and Whop charges may apply)
 - Visibility: Public submission in preparation
-> November 18, 2026: the service moved to `https://webflow-checkout.whoptools.com`; the URLs below are the submitted 0.1.5 values and still work through redirects. The submission form previously rejected hostnames containing “Webflow”, so validate the new hostname there before changing the listing.
+> November 27, 2026: `https://wf-checkout.whoptools.com` is canonical. The form rejects the longer `webflow-checkout` hostname; its homepage/install URL warnings clear with `wf-checkout`. Marketplace submission remains pending the preflight receipt, file uploads and acknowledgements.
 
 - Homepage: https://wf-checkout.whoptools.com
 - Installation: https://wf-checkout.whoptools.com/auth/start
 - Documentation: https://wf-checkout.whoptools.com/guide.html
 - Privacy: https://wf-checkout.whoptools.com/privacy.html
-- Terms: https://wf-checkout.whoptools.com/terms.html (local draft, publication pending)
+- Terms: https://wf-checkout.whoptools.com/terms.html
 - Published test site: https://whop-commerce-demo.webflow.io
-- Reviewer video: https://wf-checkout.whoptools.com/review/
+- Reviewer video: https://drive.google.com/file/d/16sx3B6fjjTH01JrR8lCNtNa26SgEJOvY/view
 - Support: yshmarov@gmail.com
 
 ## Listing copy
@@ -52,13 +52,21 @@ The existing sandbox plan belongs to the original test organization. Use **WhopT
 - `docs/assets/marketplace/02-embedded-checkout.jpg`: Configure an embedded checkout and appearance.
 - `docs/assets/marketplace/03-script-setup.jpg`: Enable the checkout runtime for a connected site.
 - `docs/assets/marketplace/04-published-checkout.jpg`: Whop payment fields on the published Webflow demo.
-- `site/review/walkthrough.mp4`: 3:10 English narration over actual test captures.
+- `site/review/walkthrough.mp4`: 3:16 English narration over current-release captures, including OAuth approval and denial.
 - `site/review/walkthrough.vtt`: English captions.
 - `bundle.zip` and `review.zip`: matching private production artifacts; not tracked in Git.
 
 ## Pending
 
-Refresh the listing screenshots and narrated walkthrough for Frosted UI 0.1.5. Preflight receipt and file uploads, final terms publication, agreement acknowledgement, and submission remain pending. The form rejects hostnames containing the Webflow name; `wf-checkout.whoptools.com` resolves that issue. The form's pricing check misread merchant subscriptions as app pricing, so the listing now describes the checkout features and explicitly states that all app features are free.
+Run App Review Preflight with the exact bundle/review ZIPs below, add its receipt,
+and upload the icon, four screenshots and private source-map artifact. Confirm
+standing review access and the final agreement before submission. The form draft
+has the current URLs, reviewer video, minimum scopes and review notes saved.
+
+The automated browser cannot open the preflight or embedded form file pickers;
+manual file selection is required. No submission has been sent. The new reviewer
+video is live on the existing Drive link (anyone with the link can view); updating
+the separately hosted `/review/` copy awaits this media PR's merge and deployment.
 
 ## Version 0.1.5 artifact checksums
 
@@ -111,3 +119,24 @@ uploads, final video link, standing review-access confirmation and the final
 agreement remain pending. File pickers in the current browser integration did
 not open for preflight or the embedded submission form. No submission has been
 sent; the final production bundle/review package must match the released source.
+
+## Current review build — November 27, 2026
+
+- Source and deployed backend: `937e454b4703043659177cbbcffeb5230613b349`.
+- Production and extension build origin: `https://wf-checkout.whoptools.com`.
+- `bundle.zip` SHA-256: `01fa74b128d0f5496474eab73962829e6ef644bd6639c560ad9291837821b7ba`.
+- `review.zip` SHA-256: `421330d4de8e252beb0bd18dba6bf54afe251aae050a7549e5357dea33a1f7a5`.
+- Extension uploaded for internal workspace testing on November 27; version
+  history records the source and bundle hash. This is separate from review distribution.
+- Configured scopes: Authorized user read, Sites read, Custom Code read/write.
+  Approval and cancellation both pass; site connection and runtime installation
+  pass with these scopes. The sandbox demo was republished with the current runtime.
+- Typecheck, lint and all 22 tests pass. Icon and screenshot limits pass.
+- New 3:16 walkthrough uploaded as a replacement version of the existing Drive
+  video; the previous version remains in Drive history and Git history. Playback
+  and anyone-with-link viewer access were verified in the browser.
+
+The earlier hostname transition left permanent redirects cached in this browser
+for both bare homepages; a fresh canonical query URL works. Fresh HTTP requests
+receive the intended temporary uncached redirect. Preserve the alias routes and
+published runtimes; do not reintroduce permanent redirects during the transition.
